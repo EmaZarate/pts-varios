@@ -1,0 +1,11 @@
+.evidence-margin{
+    margin: 3% 18% 0 18%;
+}
+
+.evidence-span {
+    font-size: 21px;
+    color: rgb(75, 75, 75);
+    margin-left: 325px;
+    position: relative;
+    top: 12px;
+}

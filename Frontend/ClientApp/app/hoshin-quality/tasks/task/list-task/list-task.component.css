@@ -1,0 +1,115 @@
+.columnWeight
+{
+  font-weight: 400;
+}
+
+.view-detail {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+
+
+.displayActionInline{
+  display: inline-flex;  
+  flex-wrap: wrap;
+}
+
+#page-wrap {
+  height:98%;
+  min-height:1050px;
+  width:745px;
+  border:none;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+#tableLogo th,
+#tableLogo td {
+  border: none;
+}
+
+.centerText { text-align: center; }
+.t { border-top: 1px solid black; }
+
+#metaRight { margin-top: 1px; width: 360px; float: right;}
+#metaRight th,
+#metaRight td {
+  border: none;
+}
+
+#metaLeft { margin-top: 1px; width: 360px; float: left;}
+#metaLeft th,
+#metaLeft td {
+  border: none;
+}
+
+#metaCenter { margin-top: 1px;}
+#metaCenter th,
+#metaCenter td {
+  border: none;
+}
+
+.items {
+  display: inline-grid;
+  width: 100%;
+}
+
+.labelBlack {
+  margin:5px;
+  color: black;
+  font-weight: 500;
+}
+.marginLeft {
+  margin-left:20px;
+}
+
+
+.wrapText {
+  word-break: break-all;
+}
+
+.spacing-table {
+  font-size: 15px;
+  border-collapse: separate;
+  table-layout: fixed;
+  width: 100%;
+  border-spacing: 0 5px; /* this is the ultimate fix */
+}
+
+.spacing-table th {
+  text-align: left;
+  padding: 5px 15px;
+}
+
+.spacing-table td {
+  border-width: 3px 0;
+  width: 50%;
+  border-style: none;
+  padding: 5px 15px;
+}
+
+.spacing-table thead {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+.spacing-table tbody {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  border-spacing: 0 10px;
+}
+
+.tableAgend th,
+.tableAgend td {
+  border:none;
+}
+
+.tableFinding th,
+.tableFinding td {
+  border:1px solid black;
+}
+.centerFields{
+  text-align: center;
+}

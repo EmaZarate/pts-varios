@@ -1,0 +1,121 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title ">Mis tareas</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <p-table #dt [columns]="cols" [value]="dataSource" [paginator]="true" [rows]="10" dataKey="id">
+                                <ng-template pTemplate="caption">
+                                    <div style="text-align: left" class="ui-helper-clearfix">
+                                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                                        <input type="text" pInputText size="50" placeholder="Buscar"
+                                            (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                            style="width:auto" class="btn-search">
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th id="col-{{i}}" *ngFor="let col of columns; let i = index"
+                                            [pSortableColumn]="col.field">
+                                                {{col.header}}
+                                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                                ariaLabelDesc="Activate to sort in descending order"
+                                                ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                                        </th>
+                                        <th>
+                                            Acciones
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns" class="centerFields">
+                                            <div *ngIf="col.header === 'Estado'">
+                                                <button mat-raised-button
+                                                    class="btn btn-primary btn-just-icon btn-round no-manito"
+                                                    matTooltip={{rowData.taskState?.name}}
+                                                    [ngStyle]="{'background-color':rowData.taskState?.color}">
+                                                </button>
+                                            </div>
+                                            <div *ngIf="col.header === 'ID'">
+                                                <a matTooltip="Ver detalles" [matTooltipPosition]="'above'"
+                                                    [routerLink]="['/quality/tasks/',rowData[col.field],'detail']">
+                                                    {{ rowData[col.field] }}
+                                                </a>
+                                            </div>
+                                            <div *ngIf="col.header === 'Descripción'" [ngClass]="{'truncate': col.header == 'Descripción'}">
+                                                <a>
+                                                    {{ rowData.description }}
+                                                </a>
+                                            </div>
+                                            <div *ngIf="col.header === 'Responsable'">
+                                                <a>
+                                                    {{ rowData.responsibleUser?.name }} {{ rowData.responsibleUser?.surname }}
+                                                </a>
+                                            </div>
+                                            <div *ngIf="col.header === 'Fecha vencimiento'">
+                                                <a>
+                                                        {{ rowData.implementationPlannedDate | date: "dd/MM/yyyy"}} 
+                                                </a>
+                                            </div>
+                                            <div *ngIf="col.header === 'Origen'">
+                                                <a>
+                                                        {{ 'AC' }}
+                                                </a>
+                                            </div>
+                                            <div *ngIf="col.header === 'ID Origen'">
+                                                <a>
+                                                        {{rowData.entityID}}
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                                <div *ngIf="rowData.taskState?.code != taskStateCode.COM">
+                                                        <div *ngIf="rowData.taskState?.code != taskStateCode.VEN">
+                                                            <div *ngIf="rowData.taskState?.code != taskStateCode.EFV && canEdit && (rowData.acApporverOrResponsibleSGCCanEdit)">
+                                                                <button mat-raised-button type="button" matTooltip="Editar"
+                                                                    [routerLink]="['/quality/tasks/',rowData.taskID,'edit']"
+                                                                    [matTooltipPosition]="'above'"
+                                                                    class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                                    <i class="material-icons">edit</i>
+                                                                </button>
+                                                            </div>
+                                                            <button mat-raised-button type="button"
+                                                                matTooltip="Extender fecha de vencimiento"
+                                                                [routerLink]="['/quality/tasks/',rowData.taskID,'extend-due-date-task']"
+                                                                [matTooltipPosition]="'above'"
+                                                                class="btn btn-primary btn-link btn-sm btn-just-icon"
+                                                                *ngIf="rowData.taskState.code == 'EFV' && canExtendDueDate">
+                                                                <i class="material-icons">schedule</i>
+                                                            </button>
+                                                        </div>
+                                                        <div *ngIf="rowData.taskState?.code == taskStateCode.VEN && canRequestDueDate && (rowData.acApporverOrResponsibleSGCCanEdit)">
+                                                            <button mat-raised-button type="button"
+                                                                matTooltip="Solicitar extensión vencimiento"
+                                                                [routerLink]="['/quality/tasks/',rowData.taskID ,'overdue-task']"
+                                                                [matTooltipPosition]="'above'"
+                                                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                                <i class="material-icons">notifications_active</i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="paginatorleft" let-state>
+                                    Mostrando registros del {{(state.page  * state.rows) + 1}} al {{state.rows * (state.page + 1)}} de un total de
+                                    {{state.totalRecords}} registros
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,55 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="offset-md-2 col-md-8">
+        <div class="card ">
+          <div class="card-header ">
+            <h4 class="card-title">Rol {{roleDetail.name}} -
+              <small class="description">Estado: {{roleDetail.active ? 'Activo' : 'Inactivo'}} - </small>
+              <small class="description">{{roleDetail.basic ? 'Tipo: Básico' : ''}}</small>
+            </h4>
+          </div>
+          <div class="card-body ">
+            <ul class="nav nav-pills nav-pills-info" role="tablist">
+              <li class="nav-item" *ngFor="let project of allClaims; let i = index">
+                <a class="nav-link" [ngClass]="{'active': i == 0}" href="#{{project.key}}" data-toggle="tab" role="tab">
+                  {{project.key | translateClaims:'es'}}
+                </a>
+            </li>
+            </ul>
+            <div class="tab-content tab-space">
+              <div *ngFor="let project of allClaims; let i = index" [ngClass]="{'active': i == 0}" class="tab-pane" id="{{project.key}}">
+                  <h5 class="info-text">Permisos en el módulo {{project.key | translateClaims: 'es'}}</h5>
+                  <div *ngFor="let module of project.value">
+                    <span class="badge badge-danger font-size-11">{{module.key | translateClaims: 'es'}}</span>
+                    <table class="table">
+                          <tbody>
+                              <tr *ngFor="let claim of module.value  ">
+                                  <td>
+                                      <div class="form-check">
+                                        <label class="form-check-label">
+                                          <input class="form-check-input claimCheck" (change)="checkboxClicked($event, claim.value)" type="checkbox" value="{{claim.value}}" disabled>
+                                          <span class="form-check-sign">
+                                            <span class="check"></span>
+                                          </span>
+                                        </label>
+                                      </div>
+                                  </td>
+                                  <td>
+                                    {{claim.value | translateClaims:'es'}}
+                                  </td>
+                               </tr>
+                          </tbody>
+                    </table>
+                  </div>  
+              </div>
+            </div>
+            <button mat-raised-button mat-min-fab type="button" [routerLink]="['/core/role']" class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+              <i class="material-icons">arrow_back</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,163 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div  class="card-header card-header-info">
+                        <h4 class="card-title">Hallazgo {{finding?.id}}</h4>
+                        <p class="card-category">Detalles del Hallazgo</p>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Estado</h6>
+                                <p>{{finding?.findingStateName}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Descripción</h6>
+                                <p>{{finding?.description}}</p>                              
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Planta de emisión</h6>
+                                <p>{{finding?.sectorPlantEmitterPlantName}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Sector de emisión</h6>
+                                <p>{{finding?.sectorPlantEmitterSectorName}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Planta de tratamiento</h6>
+                                <p>{{finding?.sectorPlantTreatmentPlantName}}</p>
+                            </div>
+                        </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Sector de tratamiento</h6>
+                            <p>{{finding?.sectorPlantTreatmentSectorName}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Planta de ubicación</h6>
+                            <p>{{finding?.sectorPlantLocationPlantName}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Sector de ubicación</h6>
+                            <p>{{finding?.sectorPlantLocationSectorName}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Usuario responsable</h6>
+                            <p>{{finding?.responsibleUserFullName}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Tipo de hallazgo</h6>
+                            <p>{{finding?.findingTypeName}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Fecha de vencimiento</h6>
+                            <p *ngIf="finding?.expirationDate === '0001-01-01T00:00:00'"> - </p>
+                            <p *ngIf="finding?.expirationDate !== '0001-01-01T00:00:00'"> {{finding?.expirationDate | date: 'dd/MM/yyyy'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Acción de contención</h6>
+                            <p *ngIf="finding?.containmentAction === null">-</p>   
+                            <p *ngIf="finding?.containmentAction !== null">{{finding?.containmentAction}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Análisis de causa</h6>
+                            <p *ngIf="finding?.causeAnalysis === null">-</p>                            
+                            <p *ngIf="finding?.causeAnalysis !== null">{{finding?.causeAnalysis}}</p>
+                        </div>
+                    </div>
+
+                    <div *ngIf="comments.length > 0" class="row">
+                        <div class="col-md-12">
+                          <div class="card">
+                            <div class="card-header">
+                              <h4 class="card-title">Comentarios anteriores</h4>
+                            </div>
+                            <div class="card-body">
+                              <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+                                <div *ngFor="let comment of comments; let i = index" [attr.data-index]="i" class="card card-plain">
+                                  <div class="card-header" role="tab" id="headingOne{{comment.findingCommentID}}">
+                                    <h5 class="mb-0">
+                                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{comment.findingCommentID}}" [attr.aria-expanded]="i == 0 ? 'true' : false" attr.aria-controls="collapseOne{{comment.findingCommentID}}">
+                                        {{comment?.date}}
+                                        <i class="material-icons">keyboard_arrow_down</i>
+                                      </a>
+                                    </h5>
+                                  </div>
+                                  <div id="collapseOne{{comment.findingCommentID}}" class="collapse" [ngClass]="{show: i == 0}" role="tabpanel" attr.aria-labelledby="headingOne{{comment.findingCommentID}}">
+                                    <div class="card-body">
+                                      {{comment?.comment}}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Comentario final</h6>
+                                <p *ngIf="finding?.finalComment === '' || finding?.finalComment === null">-</p> 
+                                <p *ngIf="finding?.finalComment !== '' && finding?.finalComment !== null">{{finding?.finalComment}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 evidences-container" *ngIf="_findingEvidences.length > 0">
+                                <app-upload-file 
+                                    [canUpload]=false
+                                    [canDelete]=false
+                                    [canDownload]=true
+                                    title="Evidencias"
+                                    [_attachments]="_findingEvidences"
+                                    [_oldAttachments]="_findingEvidences"
+                                    >
+                                  </app-upload-file>
+                            </div>
+                        </div>
+                        
+                        <button mat-raised-button type="button" [routerLink]="['/quality/finding/list']" class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+                            <i class="material-icons">arrow_back</i>
+                        </button>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

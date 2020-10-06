@@ -1,0 +1,49 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">{{language_title}}</h4>
+                        <p class="card-category">{{language_subtitle}}</p>
+                    </div>
+                    <div class="card-body">
+                        <dl>
+                            <dt>{{language_idLabel}}</dt>
+                            <dd>{{idLabel}}</dd>
+                            <dt>{{language_descriptionLabel}}</dt>
+                            <dd>{{descriptionLabel}}</dd>
+                        </dl>
+                        <form [formGroup]="closeFindingForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width" style="width: 100%">
+                                        <textarea matInput placeholder="{{language_finalComment}}" formControlName="ctrFinalComment"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                    <mat-select placeholder="{{language_findingState}}" formControlName="ctrFindingState" >
+                                        <mat-option *ngFor="let findingState of findingStates" [value]="findingState.value">
+                                        {{findingState.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <button mat-raised-button type="submit" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="{{language_closeButton}}" [matTooltipPosition]="'above'">
+                                <i class="material-icons">done</i>
+                            </button>
+                            <button mat-raised-button type="button" [routerLink]="['/quality/finding/list']" class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+                                <i class="material-icons">arrow_back</i>
+                            </button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

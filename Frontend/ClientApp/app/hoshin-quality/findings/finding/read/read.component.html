@@ -1,0 +1,146 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Mis hallazgos</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="material-s">
+                  <!-- <input type="text" [(ngModel)]="message">
+                  <button (click)="send()"></button> -->
+                  <p-table #dt [columns]="cols" [value]="findings" [paginator]="true" [rows]="10" dataKey="id">
+                    <ng-template pTemplate="caption">
+                      <div style="text-align: left" class="ui-helper-clearfix">
+                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                        <input type="text" pInputText size="50" placeholder="Buscar"
+                          (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"
+                          class="btn-search">
+                        <button mat-raised-button type="button" *ngIf="canAdd"
+                          class="btn btn-separator btn-round btn-info btn-full-round pull-right"
+                          matTooltip="Nuevo hallazgo" [matTooltipPosition]="'above'"
+                          [routerLink]="['/quality/finding/new']">
+                          <i class="material-icons">add</i>
+                        </button>
+                      </div>
+
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th id="col-{{i}}" *ngFor="let col of columns; let i = index" 
+                        [pSortableColumn]="col.field">
+                          {{col.header}}
+                          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                            ariaLabelDesc="Activate to sort in descending order"
+                            ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                        </th>
+                        <th>
+                          Acciones
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                      <tr>
+                        <td *ngFor="let col of columns" class="centerFields"
+                          [ngClass]="{'inProcessFinding': rowData.isInProcessWorkflow}">
+                          <div *ngIf="col.header === 'Estado'">
+                            <button mat-raised-button class="btn btn-primary btn-just-icon btn-round no-manito"
+                              matTooltip={{rowData.findingStateName}}
+                              [ngStyle]="{'background-color':rowData.findingStateColor}">
+                            </button>
+                          </div>
+                          <div *ngIf="col.header != 'Estado' && col.header != 'ID'" [ngClass]="{'truncate': col.header == 'Descripción'}">
+                            {{col.header === 'Vencimiento' ? (rowData[col.field] === '0001-01-01T00:00:00' ? '- -'  : rowData[col.field] | date: 'dd/MM/yyyy') : rowData[col.field]}}
+                          </div>
+                          <div *ngIf="col.header === 'ID'">
+                            <a matTooltip="Ver detalles" [matTooltipPosition]="'above'"
+                              [routerLink]="['/quality/finding/',rowData[col.field],'detail']" class="manito">
+                              {{ rowData[col.field] }}
+                            </a>
+                          </div>
+                        </td>
+                        <td class="centerFields" [ngClass]="{'inProcessFinding': rowData.isInProcessWorkflow}">
+                          <div *ngIf="!rowData.isInProcessWorkflow">
+                            <div *ngIf="rowData.findingStateCode !== findingStateCode.PDR">
+                              <div
+                                *ngIf="rowData.findingStateCode === findingStateCode.APR || rowData.findingStateCode === findingStateCode.APD || rowData.findingStateCode === findingStateCode.ENC">
+                                <button mat-raised-button *ngIf="canUpdateApproved && (rowData.editAsRefferrent || rowData.isResponsibleUser)"
+                                  type="button" [routerLink]="['/quality/finding/',rowData.id, 'update']"
+                                  matTooltip="Editar" [matTooltipPosition]="'above'"
+                                  class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                  <i class="material-icons">edit</i>
+                                </button>
+                                <button
+                                  *ngIf="rowData.findingStateCode == findingStateCode.ENC && canClose && rowData.editAsRefferrent"
+                                  mat-raised-button type="button"
+                                  [routerLink]="['/quality/finding/',rowData.id,'close']" matTooltip="Cerrar"
+                                  [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                                  <i class="material-icons">close</i>
+                                </button>
+                                <button mat-raised-button type="button"
+                                  *ngIf="((canReassign || canReassignDirectly) && (rowData.editAsRefferrent || rowData.isResponsibleUser))"
+                                  [routerLink]="['/quality/finding/',rowData.id,'reassign']" matTooltip="Reasignar"
+                                  [matTooltipPosition]="'above'" class="btn btn-success btn-link btn-sm btn-just-icon">
+                                  <i class="material-icons">cached</i>
+                                </button>
+                              </div>
+
+                              <div *ngIf="rowData.findingStateCode === findingStateCode.ESP">
+                                <button mat-raised-button type="button" *ngIf="canApprove"
+                                  [routerLink]="['/quality/finding/',rowData.id, 'approve']"
+                                  matTooltip="Aprobar o Rechazar" [matTooltipPosition]="'above'"
+                                  class="btn btn-success btn-link btn-sm btn-just-icon">
+                                  <i class="material-icons">swap_vert</i>
+                                </button>
+                              </div>
+                            </div>
+
+                            <div *ngIf="rowData.findingStateCode !== findingStateCode.ESP">
+                              <app-export-pdf [fileName]="fileName" [pdfHtml]="clickExportPdf(rowData.id)"
+                                [idContent]="'page-wrap'" [popoverTitle]="popoverTitle" [paperSize]="'a4'"
+                                [orientation]="'portrait'" [unit]="'mm'">
+                              </app-export-pdf>
+                            </div>
+
+                            <div
+                              *ngIf="rowData.findingStateCode === findingStateCode.PDR && rowData.findingStateCode !== findingStateCode.VNC">
+                              <button mat-raised-button type="button" *ngIf="canApproveReassignment"
+                                [routerLink]="['/quality/finding/',rowData.id, 'approvereassignment']"
+                                matTooltip="Aprobar Reasignación" [matTooltipPosition]="'above'"
+                                class="btn btn-success btn-link btn-sm btn-just-icon">
+                                <i class="material-icons">compare_arrows</i>
+                              </button>
+                            </div>
+
+                            <div *ngIf="rowData.findingStateCode === findingStateCode.VNC">
+                              <button mat-raised-button type="button" *ngIf="canEditExpirationDate"
+                                [routerLink]="['/quality/finding/',rowData.id, 'editexpirationdate']"
+                                matTooltip="Editar Hallazgo Vencido" [matTooltipPosition]="'above'"
+                                class="btn btn-success btn-link btn-sm btn-just-icon">
+                                <i class="material-icons">update</i>
+                              </button>
+                            </div>
+                          </div>
+                          <div *ngIf="rowData.isInProcessWorkflow">
+                            En proceso
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft" let-state>
+                      Mostrando registros del {{(state.page  * state.rows) + 1}} al {{state.rows * (state.page + 1)}} de un total de
+                      {{state.totalRecords}} registros
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

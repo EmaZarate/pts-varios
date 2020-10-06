@@ -1,0 +1,65 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header card-header-info">
+                      <h4 class="card-title">Categorías de Ishikawa</h4>
+                  </div>
+                  <div class="card-body">
+                      <button mat-raised-button type="submit" *ngIf="canAdd" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Nueva categoría" [routerLink]="['/quality/corrective-actions/config/fish-bone/','new']" >
+                        <i class="material-icons">add</i>
+                    </button>
+                      <div class="table-responsive">
+                            <table class="table">
+                              <thead class="text-primary">
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Color</th>
+                                <th>Activo</th>
+                                <th *ngIf="canEdit">Acciones</th>
+                              </thead>
+                              <tbody>
+                             <tr *ngFor='let spine of fishBone' [ngClass]="{'disabledState':!spine.active}">
+                                <td>
+                                    {{spine.fishboneID}}
+                                  </td>
+                                  <td>
+                                      {{spine.name}}
+                                  </td>
+                                 
+                                  <td>
+                                    <div class="box-color" [style.backgroundColor]='spine.color' style='height: 22px'></div>
+                                  </td>
+                                  <td>
+                                          <div class="togglebutton">
+                                              <label>
+                                                  <input type="checkbox" [disabled]="!canSwitch" [checked]='spine.active' [swal]="desactivateSpine" >
+                                                  <span class="toggle"></span>
+                                              </label>
+                                          </div>
+                                          <swal #desactivateSpine title="¿Desea {{spine.active === true ? 'desactivar' : 'activar'}} la espina {{spine.name}}?" type="question"
+                                          [showCancelButton]="true" [focusCancel]="true" 
+                                          confirmButtonText="Confirmar" cancelButtonText="Cancelar" buttonsStyling="true" (confirm)="updateSpineActive(spine)">
+                                          </swal>
+                                          
+                                  </td>
+                                  <td *ngIf="canEdit">
+                                    
+                                     <button mat-raised-button type="button" matTooltip="Editar" class="btn btn-primary btn-link btn-sm btn-just-icon" [routerLink]="['/quality/corrective-actions/config/fish-bone/',spine.fishboneID,'edit']">
+                                      <i class="material-icons">edit</i>
+                                  </button>
+                                  </td>
+                            </tr>
+                                
+                                  
+                              </tbody>
+                            </table>
+                          
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

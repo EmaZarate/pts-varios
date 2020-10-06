@@ -1,0 +1,92 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Tarea {{ _task?.taskID}}</h4>
+            <p class="card-category">Detalles de la Tarea</p>
+          </div>
+
+          <div class="card-body">
+            <div *ngIf="_task?.description" class="row">
+              <div class="col-md-12">
+                <h6>Descripción</h6>
+                <p> {{ _task?.description }} </p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <h6>Entidad asociada</h6>
+                <p> Acciones Correctivas </p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <h6>Estado</h6>
+                <p> {{ _task?.taskState.name }} </p>
+              </div>
+            </div>
+
+            <div *ngIf="_task?.responsibleUser.name" class="row">
+              <div class="col-md-12">
+                <h6>Responsable</h6>
+                <p>
+                  {{ _task?.responsibleUser.name }} {{ _task?.responsibleUser.surname }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <h6>Fecha de vencimiento</h6>
+                <p>
+                  {{ (_task?.implementationPlannedDate | date: 'dd/MM/yyyy') }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <h6>Requiere evidencia</h6>
+                <p>
+                  {{ _task?.requireEvidence ? 'Si' : 'No' }}
+                </p>
+              </div>
+            </div>
+
+            <div *ngIf="_task?.taskEvidences.length > 0" class="row">
+              <div class="col-md-12">
+                <h6>Evidencias</h6>
+                <div *ngFor="let evidence of _task?.taskEvidences">
+                  <a href="{{ evidence.url }}">
+                    <i class="material-icons file-icon download-file-icon" matTooltip="Descargar">vertical_align_bottom</i>
+                  </a> 
+                  {{ evidence.fileName }}      
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="_task?.observation" class="row observation">
+              <div class="col-md-12">
+                <h6>Observaciones</h6>
+                <p>
+                  {{ _task?.observation }}
+                </p>
+              </div>
+            </div>
+
+            <button mat-raised-button type="button" [routerLink]="['/quality/tasks/list']"
+              class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver"
+              [matTooltipPosition]="'above'">
+              <i class="material-icons">arrow_back</i>
+            </button>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

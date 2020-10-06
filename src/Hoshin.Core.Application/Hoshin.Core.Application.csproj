@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{898aa542-0a35-4979-998f-6c027b7dc237}</ProjectGuid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hoshin.CrossCutting.Authorization\Hoshin.CrossCutting.Authorization.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.JWT\Hoshin.CrossCutting.JWT.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.Storage\Hoshin.CrossCutting.Storage.csproj" />
+    <ProjectReference Include="..\Hoshin.Core.Domain\Hoshin.Core.Domain.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.Message\Hoshin.CrossCutting.Message.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.MicrosoftGraph\Hoshin.CrossCutting.MicrosoftGraph.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.WorkflowCore\Hoshin.CrossCutting.WorkflowCore.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.Logger\Hoshin.CrossCutting.Logger.csproj" />
+  </ItemGroup>
+
+</Project>

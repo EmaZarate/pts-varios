@@ -1,0 +1,40 @@
+.workgroup-span{
+  font-size: 21px;
+  color: rgb(75, 75, 75);
+  margin-right: 40px;
+
+}
+
+.workgroupContainer{
+margin-top: 12px;
+text-align: center;
+}
+
+.message{
+  font-size: 170%;
+  color: rgba(82, 82, 82, 0.25);
+}
+
+.inputCont{
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.messageCont{
+  margin-top: 16%;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;  
+}
+
+.input_{
+  display: inline-block;
+}
+
+.select_tag{
+  margin-left: auto;
+  margin-right: auto;
+  top: -45px;
+  position: relative;
+}

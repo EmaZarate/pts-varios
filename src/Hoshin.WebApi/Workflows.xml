@@ -1,0 +1,1493 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <Workflows>
+        <FindingFlow>
+          {
+          "Id": "Finding",
+          "Version": 1,
+          "DataType": "Hoshin.CrossCutting.WorkflowCore.Finding.Data.FindingWorkflowData, Hoshin.CrossCutting.WorkflowCore",
+          "Steps": [
+          {
+          "Id": "NewFinding",
+          "Name": "New Finding",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.NewFinding, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail1",
+          "Inputs": {
+          "FindingID": "data.FindingID",
+          "Description": "data.Description",
+          "PlantLocationId": "data.PlantLocationId",
+          "SectorLocationId": "data.SectorLocationId",
+          "PlantTreatmentId": "data.PlantTreatmentId",
+          "SectorTreatmentId": "data.SectorTreatmentId",
+          "FindingStateId": "data.FindingStateId",
+          "ResponsibleUserId": "data.ResponsibleUserId",
+          "FindingTypeId": "data.FindingTypeId",
+          "EmitterUserId": "data.EmitterUserId",
+          "NewEvidencesUrls": "data.NewEvidencesUrls",
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail1",
+          "Name": "New Finding Send Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitApproval",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitApproval",
+          "Name": "Wait Approval Finding",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "IfRejected",
+          "Inputs": {
+          "EventName": "\"Approve\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "IfRejected",
+          "Name": "If Rejected",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "IfApproved",
+          "Inputs": {
+          "Condition": "data.EventData == \"Rejected\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "Reject1",
+          "Name": "Rejected Finding",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.RejectFinding, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail2",
+          "Inputs": {
+          "FinalComment": "data.FinalComment"
+          },
+          "Outputs": {
+          "FinalComment": "step.FinalComment",
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail2",
+          "Name": "RejectedFinding Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          }
+          ]
+          ]
+          },
+          {
+          "Id": "IfApproved",
+          "Name": "If Approved",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData == \"Approve\" || data.EventData == \"ApproveWithPDCA\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "Approved",
+          "Name": "Approve Finding",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.ApproveFinding, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail3",
+          "Inputs": {
+          "State": "data.EventData",
+          "Description": "data.Description",
+          "PlantLocationID": "data.PlantLocationID",
+          "SectorLocationID": "data.SectorLocationID",
+          "ResponsibleUserID": "data.ResponsibleUserID",
+          "PlantTreatmentID": "data.PlantTreatmentID",
+          "SectorTreatmentID": "data.SectorTreatmentID",
+          "FindingTypeID": "data.FindingTypeID",
+          "ExpirationDate": "data.ExpirationDate",
+          "NewEvidencesUrls": "data.NewEvidencesUrls",
+          "DeleteEvidencesUrls": "data.DeleteEvidencesUrls",
+          "EmitterUserID": "data.EmitterUserID",
+          "ReviewerUserID": "data.ReviewerUserID",
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail3",
+          "Name": "ApproveFinding Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitOneApprove",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          },
+          {
+          "Id": "WaitOneApprove",
+          "Name": "Wait Update/Reassign",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "IfNotUpdated",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "IfNotUpdated",
+          "Name": "IfNotUpdated",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "IfFirstUpdate",
+          "Inputs": {
+          "Condition": "data.EventData != \"UpdateApprovedFinding\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "WhileNotUpdatedFinding",
+          "Name": "WhileNotUpdateFinding",
+          "StepType": "WorkflowCore.Primitives.While, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData != \"UpdateApprovedFinding\""
+          },
+          "Do": [
+          [
+
+          {
+          "Id": "IfReassignedWithoutApproval1",
+          "Name": "IfReassignedWithoutApproval",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "IfReassigned1",
+          "Inputs": {
+          "Condition": "data.EventData == \"ReassignedWithoutApproval\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "GenerateFindingReassignment1",
+          "Name": "GenerateFindingReassignment",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.GenerateFindingReassignment, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailGenerateFindingReassignment1",
+          "Inputs": {
+          "ResponsibleUserId": "data.ResponsibleUserId",
+          "ReassignedUserID": "data.ReassignedUserID",
+          "FindingID": "data.FindingID",
+          "PlantTreatmentID": "data.PlantTreatmentID",
+          "SectorTreatmentID": "data.SectorTreatmentID"
+
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailGenerateFindingReassignment1",
+          "Name": "GenerateFindingReassignment Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitFirstUpdateInLoop1",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          },
+          {
+          "Id": "WaitFirstUpdateInLoop1",
+          "Name": "Wait Update/Reassign",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          }
+          ]
+          ]
+          },
+          {
+          "Id": "IfReassigned1",
+          "Name": "IfReassigned",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData == \"Reassigned\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "ReassignFinding1",
+          "Name": "RequestReassignFinding",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.ReassignFinding, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailReassignFinding1",
+          "Inputs": {
+          "ResponsibleUserId": "data.ResponsibleUserId",
+          "FindingID": "data.FindingID",
+          "ReassignedUserID": "data.ReassignedUserID"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailReassignFinding1",
+          "Name": "RequestReassignFinding Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitApproveReassignment1",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          },
+          {
+          "Id": "WaitApproveReassignment1",
+          "Name": "Wait Approval Reasignment",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "IfApproveReassignment1",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "IfApproveReassignment1",
+          "Name": "IfApproveReassignment",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "IfNotApproveReassignment1",
+          "Inputs": {
+          "Condition": "data.EventData == \"ApproveReassignment\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "GenerateFindingReassignmentApproved1",
+          "Name": "GenerateFindingReassignment",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.GenerateFindingReassignment, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailGenerateFindingReassignmentApproved1",
+          "Inputs": {
+          "ResponsibleUserId": "data.ResponsibleUserId",
+          "FindingID": "data.FindingID",
+          "ReassignedUserID": "data.ReassignedUserID"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailGenerateFindingReassignmentApproved1",
+          "Name": "GenerateFindingReassignment Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitFirstUpdateInLoop2",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          },
+          {
+          "Id": "WaitFirstUpdateInLoop2",
+          "Name": "Wait Update/Reassign",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          }
+          ]
+          ]
+          },
+          {
+          "Id": "IfNotApproveReassignment1",
+          "Name": "IfNotApproveReassignment",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData == \"NotApproveReassignment\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "NotApproveFindingReassignment1",
+          "Name": "DissaproveFindingReassignment",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.RejectReassignFinding, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailRejectReassignFinding",
+          "Inputs": {
+          "ResponsibleUserId": "data.ResponsibleUserId",
+          "RejectComment": "data.RejectComment",
+          "FindingID": "data.FindingID",
+          "ReassignedUserID": "data.ReassignedUserID"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailRejectReassignFinding1",
+          "Name": "DissaproveFindingReassignment Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitFirstUpdateInLoop3",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          },
+          {
+          "Id": "WaitFirstUpdateInLoop3",
+          "Name": "Wait Update/Reassign",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          },
+
+
+
+
+
+
+          {
+          "Id": "IfFirstUpdate",
+          "Name": "IfFirstUpdate",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "WaitClose",
+          "Inputs": {
+          "Condition": "data.EventData == \"UpdateApprovedFinding\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "UpdateApprovedFindingFirst",
+          "Name": "Update Approved Finding",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.UpdateApprovedFinding, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "ExpirationDate": "data.ExpirationDate",
+          "ContainmentAction": "data.ContainmentAction",
+          "CauseAnalysis": "data.CauseAnalysis",
+          "Comment": "data.Comment",
+          "NewEvidencesUrls": "data.NewEvidencesUrls",
+          "DeleteEvidencesUrls": "data.DeleteEvidencesUrls",
+          }
+          }
+          ]
+          ]
+          },
+
+
+          {
+          "Id": "WaitClose",
+          "Name": "Wait Close/Update/Reassign",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "IfNotClosed",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "IfNotClosed",
+          "Name": "IfNotClosed",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "IfCloseFinding",
+          "Inputs": {
+          "Condition": "data.EventData != \"Close\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "WhileNotCloseFinding",
+          "Name": "WhileNotClose",
+          "StepType": "WorkflowCore.Primitives.While, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData != \"Close\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "IfUpdateFinding",
+          "Name": "IfUpdateFinding",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "IfReassignedWithoutApproval",
+          "Inputs": {
+          "Condition": "data.EventData == \"UpdateApprovedFinding\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "UpdateApprovedFinding",
+          "Name": "Update Approved Finding",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.UpdateApprovedFinding, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitCloseInLoop",
+          "Inputs": {
+          "ExpirationDate": "data.ExpirationDate",
+          "ContainmentAction": "data.ContainmentAction",
+          "CauseAnalysis": "data.CauseAnalysis",
+          "Comment": "data.Comment",
+          "NewEvidencesUrls": "data.NewEvidencesUrls",
+          "DeleteEvidencesUrls": "data.DeleteEvidencesUrls",
+          }
+          },
+          {
+          "Id": "WaitCloseInLoop",
+          "Name": "Wait Close/Update/Reassign",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          }
+          ]
+          ]
+          },
+          {
+          "Id": "IfReassignedWithoutApproval",
+          "Name": "IfReassignedWithoutApproval",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "IfReassigned",
+          "Inputs": {
+          "Condition": "data.EventData == \"ReassignedWithoutApproval\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "GenerateFindingReassignment",
+          "Name": "GenerateFindingReassignment",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.GenerateFindingReassignment, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailGenerateFindingReassignment",
+          "Inputs": {
+          "ResponsibleUserId": "data.ResponsibleUserId",
+          "ReassignedUserID": "data.ReassignedUserID",
+          "FindingID": "data.FindingID"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailGenerateFindingReassignment",
+          "Name": "GenerateFindingReassignment Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitCloseInLoop2",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          },
+          {
+          "Id": "WaitCloseInLoop2",
+          "Name": "Wait Close/Update/Reassign",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          }
+          ]
+          ]
+          },
+          {
+          "Id": "IfReassigned",
+          "Name": "IfReassigned",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData == \"Reassigned\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "ReassignFinding",
+          "Name": "RequestReassignFinding",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.ReassignFinding, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailReassignFinding",
+          "Inputs": {
+          "ResponsibleUserId": "data.ResponsibleUserId",
+          "FindingID": "data.FindingID",
+          "ReassignedUserID": "data.ReassignedUserID"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailReassignFinding",
+          "Name": "RequestReassignFinding Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitApproveReassignment",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          },
+          {
+          "Id": "WaitApproveReassignment",
+          "Name": "Wait Approval Reasignment",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "IfApproveReassignment",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "IfApproveReassignment",
+          "Name": "IfApproveReassignment",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "IfNotApproveReassignment",
+          "Inputs": {
+          "Condition": "data.EventData == \"ApproveReassignment\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "GenerateFindingReassignmentApproved",
+          "Name": "GenerateFindingReassignment",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.GenerateFindingReassignment, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailGenerateFindingReassignmentApproved",
+          "Inputs": {
+          "ResponsibleUserId": "data.ResponsibleUserId",
+          "FindingID": "data.FindingID",
+          "ReassignedUserID": "data.ReassignedUserID"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailGenerateFindingReassignmentApproved",
+          "Name": "GenerateFindingReassignment Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitCloseInLoop3",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          },
+          {
+          "Id": "WaitCloseInLoop3",
+          "Name": "Wait Close/Update/Reassign",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          }
+          ]
+          ]
+          },
+          {
+          "Id": "IfNotApproveReassignment",
+          "Name": "IfNotApproveReassignment",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData == \"NotApproveReassignment\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "NotApproveFindingReassignment",
+          "Name": "DissaproveFindingReassignment",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.RejectReassignFinding, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailRejectReassignFinding",
+          "Inputs": {
+          "ResponsibleUserId": "data.ResponsibleUserId",
+          "RejectComment": "data.RejectComment",
+          "FindingID": "data.FindingID",
+          "ReassignedUserID": "data.ReassignedUserID"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailRejectReassignFinding",
+          "Name": "DissaproveFindingReassignment Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitCloseInLoop4",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          },
+          {
+          "Id": "WaitCloseInLoop4",
+          "Name": "Wait Close/Update/Reassign",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EventName": "\"Close\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.Now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          },
+          {
+          "Id": "IfCloseFinding",
+          "Name": "IfCloseFinding",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData == \"Close\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "CloseFinding",
+          "Name": "CloseFinding",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Finding.Steps.CloseFinding, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail5",
+          "Inputs": {
+          "State": "data.State",
+          "FinalComment": "data.FinalComment"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail5",
+          "Name": "CloseFinding Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          }
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          }
+          ]
+          }
+        </FindingFlow>
+      
+      
+      
+        <AuditFlow>
+          {
+          "Id": "Audit",
+          "Version": 1,
+          "DataType": "Hoshin.CrossCutting.WorkflowCore.Audit.Data.AuditWorkflowData, Hoshin.CrossCutting.WorkflowCore",
+          "Steps": [
+          {
+          "Id": "ScheduleAudit",
+          "Name": "Schedule Audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.ScheduleAudit, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail1",
+          "Inputs": {
+          "PlantID": "data.PlantId",
+          "SectorID": "data.SectorID",
+          "AuditorID": "data.AuditorID",
+          "ExternalAuditor": "data.ExternalAuditor",
+          "AuditInitDate": "data.AuditInitDate",
+          "CreationDate": "data.CreationDate",
+          "AuditTypeID": "data.AuditTypeID",
+          "AuditStandard": "data.AuditStandard"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail1",
+          "Name": "Scheduled Audit Send Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitToPlanAudit",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitToPlanAudit",
+          "Name": "Wait to plan audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "IfToPlanAudit",
+          "Inputs": {
+          "EventName": "\"ToPlan\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "IfToPlanAudit",
+          "Name": "If to plan audit",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          // "NextStepId": "" IDK if we have another step if not to plan the audit
+          "Inputs": {
+          "Condition": "data.EventData == \"ToPlan\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "PlanAudit",
+          "Name": "Plan Audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.PlanAudit, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail2",
+          "Inputs": {
+          "AuditTeam": "data.AuditTeam",
+          "AuditInitDate": "data.AuditInitDate",
+          "AuditInitTime": "data.AuditInitTime",
+          "AuditFinishDate": "data.AuditFinishDate",
+          "AuditFinishTime": "data.AuditFinishTime",
+          "AuditStandardAspects": "data.AuditStandardAspects",
+          "DocumentsAnalysisDate": "data.DocumentsAnalysisDate",
+          "DocumentAnalysisDuration": "data.DocumentAnalysisDuration",
+          "ReportEmittedDate": "data.ReportEmittedDate",
+          "CloseMeetingDate": "data.CloseMeetingDate",
+          "CloseMeetingDuration": "data.CloseMeetingDuration",
+          "CloseDate": "data.CloseDate"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail2",
+          "Name": "To Plan Audit Send Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitApprovePlanAudit",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitApprovePlanAudit",
+          "Name": "Wait to approve plan audit",
+          "NextStepId": "IfNotApprovedPlanAudit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EventName": "\"Approve\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now",
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "IfNotApprovedPlanAudit",
+          "Name": "If not approved plan audit",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "IfApprovedPlanAudit",
+          "Inputs": {
+          "Condition": "data.EventData != \"Approve\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "WhileNotApprovePlanAudit",
+          "Name": "While not approve the plan audit",
+          "StepType": "WorkflowCore.Primitives.While, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData != \"Approve\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "RejectPlanAudit",
+          "Name": "Rejected plan audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.RejectPlanAudit, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail3",
+          "Inputs": {
+          "ApprovePlanComments": "data.ApprovePlanComments"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail3",
+          "Name": "Rejected Audit Plan",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitForRePlanAudit",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitForRePlanAudit",
+          "Name": "Wait for re-plan Audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "IfAuditReplanned",
+          "Inputs": {
+          "EventName": "\"ToPlan\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now",
+          }
+          },
+          {
+          "Id": "IfAuditReplanned",
+          "Name": "If audit was replanned",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData == \"ToPlan\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "RePlanAudit",
+          "Name": "Re plan audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.RePlanAudit, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail4",
+          "Inputs": {
+          "AuditTeam": "data.AuditTeam",
+          "AuditStandardAspects": "data.AuditStandardAspects",
+          "DocumentsAnalysisDate": "data.DocumentsAnalysisDate",
+          "DocumentAnalysisDuration": "data.DocumentAnalysisDuration",
+          "ReportEmittedDate": "data.ReportEmittedDate",
+          "CloseMeetingDate": "data.CloseMeetingDate",
+          "CloseMeetingDuration": "data.CloseMeetingDuration",
+          "CloseDate": "data.CloseDate"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail4",
+          "Name": "Send email audit re-planned",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitApprovePlanAuditInLoop",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitApprovePlanAuditInLoop",
+          "Name": "Wait approve plan audit after re-plan",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EventName": "\"Approve\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now",
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          },
+          {
+          "Id": "IfApprovedPlanAudit",
+          "Name": "If approve plan audit",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData == \"Approve\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "ApprovePlanAudit",
+          "Name": "ApprovePlanAudit",
+          "NextStepId": "SendEmail5",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.ApprovePlanAudit, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "ApprovePlanComments": "data.ApprovePlanComments"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail5",
+          "Name": "Send email when approve plan audit",
+          "NextStepId": "WaitEmmitReport",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitEmmitReport",
+          "Name": "Wait to emmit report",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "IfToEmmitReport",
+          "Inputs": {
+          "EventName": "\"ToEmmit\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now",
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "IfToEmmitReport",
+          "Name": "If to emmit report audit",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          //"NextStepId": "IfApproveReportAudit",
+          "Inputs": {
+          "Condition": "data.EventData == \"ToEmmit\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "EmmitReportAudit",
+          "Name": "Emmit Report",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.EmmitReportAudit, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail6",
+          "Inputs": {
+          "Conclusion": "data.Conclusion",
+          "Recomendations": "data.Recomendations",
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail6",
+          "Name": "To Emmit Report Send Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitApproveEmmitReport",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitApproveEmmitReport",
+          "Name": "Wait to approve report",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "IfNotApprovedReportAudit",
+          "Inputs": {
+          "EventName": "\"ApproveReport\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now",
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "IfNotApprovedReportAudit",
+          "Name": "If not approved report audit",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "NextStepId": "IfApprovedReportAudit",
+          "Inputs": {
+          "Condition": "data.EventData != \"Approve\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "WhileNotApproveEmmitReport",
+          "Name": "While not approve the plan audit",
+          "StepType": "WorkflowCore.Primitives.While, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData != \"Approve\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "RejectReportAudit",
+          "Name": "Rejected report audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.RejectReportAudit, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail7",
+          "Inputs": {
+          "ApproveReportComments": "data.ApproveReportComments",
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail7",
+          "Name": "Send email reject report audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitForReEmmitReportAudit",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitForReEmmitReportAudit",
+          "Name": "Wait for re-do report audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "IfReEmmitReportAudit",
+          "Inputs": {
+          "EventName": "\"ToEmmit\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now",
+          }
+          },
+          {
+          "Id": "IfReEmmitReportAudit",
+          "Name": "If audit was reemmited",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData == \"ToEmmit\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "ReEmmitReportAudit",
+          "Name": "Re do report audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.ReEmmitReportAudit, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail8",
+          "Inputs": {
+          "Conclusion": "data.Conclusion",
+          "Recomendations": "data.Recomendations",
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail8",
+          "Name": "Send email audit re-planned",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitApproveEmmitReportInLoop",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitApproveEmmitReportInLoop",
+          "Name": "Wait to approve report after re-emmit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EventName": "\"ApproveReport\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now",
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          },
+          {
+          "Id": "IfApprovedReportAudit",
+          "Name": "If approve report audit",
+          "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+          "Inputs": {
+          "Condition": "data.EventData == \"Approve\""
+          },
+          "Do": [
+          [
+          {
+          "Id": "CloseAudit",
+          "Name": "CloseAudit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.Audit.Steps.CloseAudit, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmail9",
+          "Inputs": {
+          "ApproveReportComments": "data.ApproveReportComments",
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmail9",
+          "Name": "Send email when approve report audit",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          //"NextStepId":"WaitEmmitReport",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+
+          ]
+          ]
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          }
+          ]
+          ]
+          }
+          ]
+          }
+        </AuditFlow>
+
+        <CorrectiveActionFlow>
+          {
+          "Id": "CorrectiveAction",
+          "Version": 1,
+          "DataType": "Hoshin.CrossCutting.WorkflowCore.CorrectiveAction.Data.CorrectiveActionWorkflowData, Hoshin.CrossCutting.WorkflowCore",
+          "Steps": [
+          {
+          "Id": "NewCorrectiveAction",
+          "Name": "NewCorrectiveAction",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.CorrectiveAction.Steps.NewCorrectiveAction, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailNewCorrectiveAction",
+          "Inputs": {
+          "CreationDate": "data.CreationDate",
+          "Description": "data.Description",
+          "FindingID": "data.FindingID",
+          "EmitterUserID": "data.EmitterUserID",
+          "PlantLocationID": "data.PlantLocationID",
+          "SectorLocationID": "data.SectorLocationID",
+          "PlantTreatmentID": "data.PlantTreatmentID",
+          "SectorTreatmentID": "data.SectorTreatmentID",
+          "ResponsibleUserID": "data.ResponsibleUserID",
+          "ReviewerUserID": "data.ReviewerUserID"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailNewCorrectiveAction",
+          "Name": "New CorrectiveAction Send Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitToFinishCauseAnalysis",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitToFinishCauseAnalysis",
+          "Name": "Wait To Finish Cause Analysis",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.CorrectiveAction.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "GenerateCorrectiveAction",
+          "Inputs": {
+          "EventName": "\"FinishedAnalysis\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "GenerateCorrectiveAction",
+          "Name": "Generate Corrective Action",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.CorrectiveAction.Steps.GenerateCorrectiveAction, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailGenerateCorrectiveAction",
+          "Inputs": {
+          "Impact": "data.Impact",
+          "MaxDateEfficiencyEvaluation": "data.MaxDateEfficiencyEvaluation",
+          "MaxDateImplementation": "data.MaxDateImplementation",
+          "EmitterUserID": "data.EmitterUserID"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailGenerateCorrectiveAction",
+          "Name": "Generated CorrectiveAction Send Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "GenerateTaskUsers",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "GenerateTaskUsers",
+          "Name": "Generate Task Users",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.CorrectiveAction.Steps.GenerateTaskUsers, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailGenerateTaskUsers",
+          "Inputs": {},
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailGenerateTaskUsers",
+          "Name": "Generated TaskUsers Send Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitToFinishTasks",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitToFinishTasks",
+          "Name": "Wait To Finish Tasks",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.CorrectiveAction.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "FinishedTasks",
+          "Inputs": {
+          "EventName": "\"FinishedTasks\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "FinishedTasks",
+          "Name": "Finished Tasks",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.CorrectiveAction.Steps.FinishedTasks, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailTaskFinished",
+          "Inputs": {
+          "EmitterUserID": "data.EmitterUserID"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailTaskFinished",
+          "Name": "Task Finished Send Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "WaitToReviewCorrectiveAction",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          },
+          {
+          "Id": "WaitToReviewCorrectiveAction",
+          "Name": "Wait To Review CorrectiveAction",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.CorrectiveAction.Steps.WaitForCustom, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "ReviewedCorrectiveAction",
+          "Inputs": {
+          "EventName": "\"ReviewedCorrectiveAction\"",
+          "EventKey": "context.Workflow.Id",
+          "EffectiveDate": "DateTime.now"
+          },
+          "Outputs": {
+          "EventData": "step.EventData"
+          }
+          },
+          {
+          "Id": "ReviewedCorrectiveAction",
+          "Name": "Reviewed CorrectiveAction",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.CorrectiveAction.Steps.ReviewedCorrectiveAction, Hoshin.CrossCutting.WorkflowCore",
+          "NextStepId": "SendEmailReviewedCorrectiveAction",
+          "Inputs": {
+          "isEffective": "data.isEffective",
+          "EvaluationCommentary": "data.EvaluationCommentary",
+          "EvidencesUrl": "data.EvidencesUrl"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses",
+          "EmailSubject": "step.EmailSubject",
+          "EmailMessage": "step.EmailMessage"
+          }
+          },
+          {
+          "Id": "SendEmailReviewedCorrectiveAction",
+          "Name": "Reviewed CorrectiveAction Send Email",
+          "StepType": "Hoshin.CrossCutting.WorkflowCore.GenericSteps.SendEmail, Hoshin.CrossCutting.WorkflowCore",
+          "Inputs": {
+          "EmailAddresses": "data.EmailAddresses",
+          "EmailSubject": "data.EmailSubject",
+          "EmailMessage": "data.EmailMessage"
+          },
+          "Outputs": {
+          "EmailAddresses": "step.EmailAddresses"
+          }
+          }
+          ]
+          }
+        </CorrectiveActionFlow>
+    </Workflows>
+</configuration>

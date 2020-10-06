@@ -1,0 +1,46 @@
+<div class="main-content">
+  <form [formGroup]="assignmentsForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-5">
+        <mat-form-field class="example-full-width">
+          <mat-select placeholder="Planta" (selectionChange)="changeSelectedPlant($event.value)" formControlName="plant"
+            [disabled]="!isFormDisabled">
+            <mat-option *ngFor="let plant of allPlants" [value]="plant.plantID">
+              {{plant.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngIf="isFormDisabled" class="col-lg-7 col-md-6 ">
+        <button mat-raised-button (click)="enableForms()" class="btn btn-fill btn-info">Habilitar edición</button>
+      </div>
+      <div *ngIf="!isFormDisabled" class="col-lg-7 col-md-6 ">
+        <button mat-raised-button type="submit" class="btn btn-fill btn-info">Guardar</button>
+        <button mat-raised-button (click)="disableForms()" class="btn btn-fill btn-danger">Cancelar</button>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="showSectorForm">
+    <app-plant-sector-form [plant]="plantSelected" [sectors]="sectorSelected" [disabled]="isFormDisabled"
+      (sectorsSelectedEmitter)="updateTree($event)"></app-plant-sector-form>
+  </div>
+  <div *ngIf="showJobForm">
+    <app-sector-job-form [jobs]="selectedJobs" [disabled]="isFormDisabled" [sector]="sectorEditing"
+      (jobsSelectedEmitter)="updateTreeJobs($event)"></app-sector-job-form>
+  </div>
+  <div class="container-fluid" *ngIf="showTree">
+    <div class="row">
+
+      <div class="col-lg-12" id="contentFish">
+
+      </div>
+
+    </div>
+    <div class="row">
+
+    </div>
+
+
+  </div>
+
+</div>

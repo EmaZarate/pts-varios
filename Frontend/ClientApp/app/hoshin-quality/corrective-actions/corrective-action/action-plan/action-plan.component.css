@@ -1,0 +1,11 @@
+::ng-deep .mat-paginator-page-size-select {
+    width: 35px!important;
+}
+
+.list-task-span {
+    font-size: 21px;
+    color: rgb(75, 75, 75);
+    margin-left: 295px;
+    position: relative;
+    top: 12px;
+}

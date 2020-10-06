@@ -1,0 +1,71 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title ">Sectores</h4>
+                    </div>
+                    <div class="card-body">
+                        <button mat-raised-button type="submit" *ngIf="canAdd"
+                            class="btn btn-separator btn-round btn-info btn-full-round pull-right"
+                            matTooltip="Nuevo sector" [matTooltipPosition]="'above'"
+                            [routerLink]="['/core/sectors/new']">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Código</th>
+                                    <th>Descripción</th>
+                                    <th>Activo</th>
+                                    <th>Acciones</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor='let sector of sectors' [ngClass]="{'disabledState':!sector.active}">
+                                        <td>
+                                            {{sector.sectorId}}
+                                        </td>
+                                        <td>
+                                            {{sector.name}}
+                                        </td>
+                                        <td>
+                                            {{sector.code}}
+                                        </td>
+                                        <td>
+                                            {{sector.description}}
+                                        </td>
+                                        <td>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" [checked]='sector.active'
+                                                        [disabled]="!canSwitch" [swal]="desactivateSector">
+                                                    <span class="toggle"></span>
+                                                </label>
+                                            </div>
+                                            <swal #desactivateSector
+                                                title="¿Desea {{sector.active === true ? 'desactivar' : 'activar'}} el sector {{sector.name}}?"
+                                                type="question" [showCancelButton]="true" [focusCancel]="true" confirmButtonText="Confirmar" cancelButtonText="Cancelar" buttonsStyling="true"
+                                                (confirm)="updateSectorState(sector)">
+                                            </swal>
+                                        </td>
+                                        <td>
+                                            <button mat-raised-button type="button" *ngIf="canEdit"
+                                                [routerLink]="['/core/sectors/',sector.sectorId,'edit']"
+                                                matTooltip="Editar" [matTooltipPosition]="'above'"
+                                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

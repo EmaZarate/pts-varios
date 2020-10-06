@@ -1,0 +1,14 @@
+<p>Editando sector: {{sector?.name}}</p>
+<div class="row">
+  <div id="jobsChecks" class ="col-md-3" *ngFor="let job of allJobs">
+      <div class="form-check">
+      <label class="form-check-label">
+          <input class="form-check-input jobCheck" (change)="checkboxClicked($event, job)" type="checkbox" value="{{job.jobId}}">
+          <span class="form-check-sign">
+            <span class="check"></span>
+          </span>
+        </label>
+        <span>{{job.name}}</span>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{a24e9ea0-5b74-445f-a2b1-c59ff22494e8}</ProjectGuid>      
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LocalStorage" Version="2.0.0-beta-2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hoshin.CrossCutting.MicrosoftGraph\Hoshin.CrossCutting.MicrosoftGraph.csproj" />
+  </ItemGroup>
+
+</Project>

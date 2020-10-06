@@ -1,0 +1,97 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.material-datatables table thead tr th {
+    font-size: 14px;
+    font-weight: 700!important;
+}
+
+.hide {
+    display: none;
+}
+
+.btn-full-round {
+    padding: 12px!important;
+}
+
+.btn-separator {
+    margin-left: 20px;
+}
+
+.btn-search {
+    margin: 10px;
+}
+
+.tooltip-inner,
+.mat-tooltip {
+    font-size: small;
+}
+
+input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.manito {
+    cursor: pointer;
+}
+
+.no-manito {
+    cursor: auto !important;
+}
+
+.truncate {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.table-header {
+    box-sizing: border-box;
+    text-align: left;
+    padding: 1px 3px 1px 5px;
+    background: #F3E5F5;
+    border-top: 1px solid #894aa4;
+    border-bottom: 1px solid transparent;
+}
+
+.table-data {
+    box-sizing: border-box;
+    padding: 1px;
+    background: white;
+    border-top: 1px solid #894aa4;
+    border-bottom: 1px solid transparent;
+}
+
+.table-line {
+    box-sizing: border-box;
+    padding: 3px;
+    background: white;
+    border-bottom: 1px solid #894aa4;
+}
+
+.bottom-line {
+    border-bottom: #894aa4;
+}
+
+.page-break {
+    page-break-inside: avoid;
+}

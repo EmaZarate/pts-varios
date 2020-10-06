@@ -1,0 +1,67 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-info">
+                    <h4 class="card-title">Criterios de parametrización</h4>
+                </div>
+                <div class="card-body">
+                    <button mat-raised-button type="submit" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Nueva parametrización" [routerLink]="['/quality/corrective-actions/config/parametrization/','new']" >
+                      <i class="material-icons">add</i>
+                  </button>
+                    <div class="table-responsive">
+                          <table class="table">
+                            <thead class="text-primary">
+                              <th>ID</th>
+                              <th>Nombre</th>
+                              <th>Código</th>
+                              <th>Valor</th>
+                              <th>Acciones</th>
+                            </thead>
+                            <tbody>
+                           <tr *ngFor='let param of parametrization' [ngClass]="{'disabledState':!param.active}">
+                              <td>
+                                  {{param.parametrizationCorrectiveActionId}}
+                                </td>
+                                <td>
+                                    {{param.name}}
+                                </td>
+                                <td>
+                                  {{param.code}}
+                                </td>
+                                <td>
+                                  {{param.value}}
+                                </td>
+                               
+                                <!-- <td>
+                                        <div class="togglebutton">
+                                            <label>
+                                                <input type="checkbox" [checked]='param.active' [swal]="desactivateSpine" >
+                                                <span class="toggle"></span>
+                                            </label>
+                                        </div>
+                                        <swal #desactivateSpine title="¿Desea {{param.active === true ? 'desactivar' : 'activar'}} la espina {{param.name}}?" type="question"
+                                        [showCancelButton]="true" [focusCancel]="true" (confirm)="updateSpineActive(param)">
+                                        </swal>
+                                        
+                                </td> -->
+                                <td>
+                                  
+                                   <button mat-raised-button type="button"  matTooltip="Editar" class="btn btn-primary btn-link btn-sm btn-just-icon" [routerLink]="['/quality/corrective-actions/config/parametrization/',param.parametrizationCorrectiveActionId,'edit']">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                </td>
+                          </tr>
+                              
+                                
+                            </tbody>
+                          </table>
+                        
+                    </div>
+                </div>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>

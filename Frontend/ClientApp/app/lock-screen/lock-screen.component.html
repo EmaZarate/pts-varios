@@ -1,0 +1,69 @@
+<block-ui>
+  <div class="wrapper wrapper-full-page">   
+    <div class="page-header lock-page header-filter" id="imgLock">
+      <!--   you can change the color of the filter page using: data-color="blue | green | orange | red | purple" -->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 ml-auto mr-auto">
+            <div class="card card-profile text-center card-hidden">
+              <div class="card-header ">
+                <div class="card-avatar">
+                  <a href="#">
+                    <img class="img" [src]="user?.base64Profile" onError="this.src='/assets/img/default-avatar.png';">
+                  </a>
+                </div>
+              </div>
+              <form [formGroup]="paramUnlockedForm">
+              <div class="card-body ">
+                <h4 class="card-title">{{userLogged?.sub}}</h4>
+                
+                <mat-form-field class="example-full-width has-label" [ngClass]="{'has-success':validPassword===true}">
+                    <input type="password"
+                    matInput
+                    id="passwordUnlock"
+                    placeholder="Contraseña *"
+                    (ngModelChange)="passwordValidation($event)"
+                    formControlName="passwordUnlock">
+                    <div *ngIf="isFieldValid(paramUnlockedForm, 'passwordUnlock')" >                        
+                        <span class="sr-only">(error)</span>
+                        <div class="error-msg">
+                          Ingrese una contraseña valida.
+                        </div>
+                      </div>
+                  </mat-form-field>
+              </div>
+              <div class="card-footer justify-content-center">
+                  <button mat-raised-button (click)="unLockedUser()" class="btn btn-rose btn-round">Desbloquear</button>                
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer ">
+        <div class="container-fluid">
+          <nav class="pull-left">
+            <ul>
+              <li>
+                <a href="https://mstech720.sharepoint.com/">
+                  MS Technologies
+                </a>
+              </li>
+              <li>
+                <a href="https://mstech720.sharepoint.com/">
+                  About Us
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <div class="copyright pull-right">
+              Copyright &copy; 2018 <a href="https://mstech720.sharepoint.com/" target="_blank">MS Technologies.</a> Todos los derechos reservados.
+            </div>
+        </div>
+      </footer>
+      
+  </div>
+  
+</block-ui>
+

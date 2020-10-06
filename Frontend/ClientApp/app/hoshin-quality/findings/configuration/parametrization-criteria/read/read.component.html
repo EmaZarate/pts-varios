@@ -1,0 +1,65 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title ">Criterios de parametrización</h4>
+                    </div>
+                    <div class="card-body">
+                        <button mat-raised-button type="submit" *ngIf="canAdd"
+                            class="btn btn-separator btn-round btn-info btn-full-round pull-right"
+                            matTooltip="Nuevo criterio" [matTooltipPosition]="'above'"
+                            [routerLink]="['/quality/finding/config/parametrization-criteria/new']">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Nombre
+                                    </th>
+                                    <th>
+                                        Tipo de dato
+                                    </th>
+                                    <th>
+                                        Acciones
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let el of parametrizationCriterias; let i=index">
+                                        <td>
+                                            {{(el.id)}}
+                                        </td>
+                                        <td>
+                                            {{el.name}}
+                                        </td>
+                                        <td>
+                                            {{datatypes[el.dataType-1].name}}
+                                        </td>
+                                        <td>
+                                            <button mat-raised-button type="button" *ngIf="canEdit"
+                                                [routerLink]="['/quality/finding/config/parametrization-criteria',el.id,'edit']"
+                                                matTooltip="Editar" [matTooltipPosition]="'above'"
+                                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                            <!-- <button mat-raised-button type="button" (click)="delete(el.Id)" matTooltip="Eliminar" [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">close</i>
+                                            </button> -->
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

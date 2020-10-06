@@ -1,0 +1,78 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title ">Normas</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <button mat-raised-button type="submit"
+                            class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Nuevo"
+                            [matTooltipPosition]="'above'" [routerLink]="['/quality/audits/config/standard/new']">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        Código
+                                    </th>
+                                    <th>
+                                        Nombre
+                                    </th>
+                                    <th>
+                                        Activo
+                                    </th>
+                                    <th>
+                                        Acciones
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let stand of _standards; let i=index"
+                                        [ngClass]="{'disabledState':!stand.active}">
+                                        <td>
+                                            {{stand.code}}
+                                        </td>
+                                        <td>
+                                            {{stand.name}}
+                                        </td>
+                                        <td>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" [checked]='stand.active'
+                                                        [swal]="desactivateStandard">
+                                                    <span class="toggle"></span>
+                                                </label>
+                                            </div>
+                                            <swal #desactivateStandard
+                                                title="¿Desea {{stand.active === true ? 'desactivar' : 'activar'}} la norma {{stand.name}}?"
+                                                type="question" [showCancelButton]="true" [focusCancel]="true" confirmButtonText="Confirmar" cancelButtonText="Cancelar" buttonsStyling="true"
+                                                (confirm)="updateStandardActive(stand)">
+                                            </swal>
+                                        </td>
+                                        <td>
+                                            <button mat-raised-button type="button"
+                                                [routerLink]="['/quality/audits/config/standard',stand.standardID,'edit']"
+                                                matTooltip="Editar" [matTooltipPosition]="'above'"
+                                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                            <!-- <button mat-raised-button type="button" (click)="delete(stand.standardID)" matTooltip="Inactivar" [matTooltipPosition]="'above'"
+                                                class="btn btn-danger btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">remove</i>
+                                            </button> -->
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+.actions {
+  float: right;
+  line-height: 0px;
+  height: 0px;
+}
+
+.action-button{
+  padding-left: 5px;
+  padding-right: 5px;
+
+}
+
+.valid{
+  display: none;
+}

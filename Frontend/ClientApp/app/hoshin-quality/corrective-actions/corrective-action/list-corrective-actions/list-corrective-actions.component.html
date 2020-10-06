@@ -1,0 +1,219 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title ">Acciones Correctivas</h4>
+          </div>
+          <div class="card-body">
+            <p-table #dt [columns]="cols" [value]="correctiveActions" [paginator]="true" [rows]="10"
+              dataKey="correctiveActionID">
+              <ng-template pTemplate="caption">
+                <div style="text-align: left" class="ui-helper-clearfix">
+                  <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                  <input type="text" pInputText size="50" placeholder="Buscar"
+                    (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto" class="btn-search">
+                  <button mat-raised-button type="button"
+                    class="btn btn-separator btn-round btn-info btn-full-round pull-right"
+                    matTooltip="Nueva Acción Correctiva" [matTooltipPosition]="'above'"
+                    [routerLink]="['/quality/corrective-actions/schedule']">
+                    <i class="material-icons">add</i>
+                  </button>
+                </div>
+
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th style="width: 3em"></th>
+                  <th id="col-{{i}}" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                      ariaLabelDesc="Activate to sort in descending order"
+                      ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                  </th>
+                  <th id="col-actions">
+                    Acciones
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                  <td>
+                    <a href="#" [pRowToggler]="rowData" matTooltip="Ver Plan de Acción" [matTooltipPosition]="'above'">
+                      <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                    </a>
+                  </td>
+                  <td *ngFor="let col of columns" class="centerFields">
+                    <div *ngIf="col.header === 'Estado'">
+                      <button mat-raised-button class="btn btn-primary btn-just-icon btn-round no-manito"
+                        matTooltip={{rowData.correctiveActionStateName}}
+                        [ngStyle]="{'background-color':rowData.correctiveActionStateColor}">
+                      </button>
+                    </div>
+                    <div *ngIf="col.header != 'Estado' && col.header != 'ID'" [ngClass]="{'truncate': col.header == 'Descripción'}">
+                      {{rowData[col.field]}}
+                    </div>
+                    <div *ngIf="col.header === 'ID'">
+                      <a matTooltip="Ver detalles" [matTooltipPosition]="'above'" [routerLink]="[
+                          '/quality/corrective-actions/',
+                          rowData[col.field],
+                          'detail'
+                        ]">
+                        {{ rowData[col.field] }}
+                      </a>
+                    </div>
+                  </td>
+                  <td class="centerFields">
+                    <button mat-raised-button type="button" matTooltip="Planificar"
+                      *ngIf="
+                    (rowData.correctiveActionState.code == CorrectiveActionStateCode.ABI) && (canPlanning) && (rowData.editAsResponsibleRefferrent || rowData.isResponsibleUser)"
+                      [routerLink]="[
+                          '/quality/corrective-actions/',
+                          rowData.correctiveActionID,
+                          'generate-ac'
+                        ]" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                      <i class="material-icons">insert_invitation</i>
+                    </button>
+                    <button mat-raised-button type="button" [matTooltip]="
+                    rowData.correctiveActionState.code ==
+                          CorrectiveActionStateCode.EFP
+                            ? 'Extender fecha de planificación'
+                            : 'Extender fecha de evaluación'
+                        " *ngIf="
+                            (rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.EFP ||
+                            rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.EFE) &&
+                            (canExtendPlanningDueDate || canExtendEvaluateDueDate)" [routerLink]="[
+                          '/quality/corrective-actions/',
+                          rowData.correctiveActionID,
+                          'extend-due-date'
+                        ]" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                      <i class="material-icons">schedule</i>
+                    </button>
+                    <button mat-raised-button type="button"
+                                  *ngIf="(canReassign && rowData.editAsRefferrent) || canReassignDirectly &&
+                                  (rowData.correctiveActionState.code == CorrectiveActionStateCode.ABI ||
+                                  rowData.correctiveActionState.code == CorrectiveActionStateCode.VSP ||
+                                  rowData.correctiveActionState.code == CorrectiveActionStateCode.EFP)" 
+                                  [routerLink]="['/quality/corrective-actions/',rowData.correctiveActionID,'reassign']" matTooltip="Reasignar"
+                                  
+                                  [matTooltipPosition]="'above'" class="btn btn-success btn-link btn-sm btn-just-icon">
+                                  <i class="material-icons">cached</i>
+                                </button>
+                    <button mat-raised-button type="button" matTooltip="Eliminar" *ngIf="
+                    (rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.ABI ||
+                            rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.VSP) &&
+                            (canDelete)" (click)="deleteCorrectiveAction(rowData.correctiveActionID)"
+                      [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                      <i class="material-icons">close</i>
+                    </button>
+                    <div *ngIf="
+                    (rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.PLN ||
+                            rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.VST ||
+                            rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.TRT ||
+                            rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.VSE ||
+                            rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.CER)
+                            && (canExport)
+                        ">
+                      <app-export-pdf [fileName]="fileName" [pdfHtml]="exportPdf(rowData.correctiveActionID)"
+                        [idContent]="'page-wrap'" [popoverTitle]="popoverTitle" [paperSize]="'a4'"
+                        [orientation]="'portrait'" [unit]="'mm'" matTooltip="Exportar" [matTooltipPosition]="'above'">
+                      </app-export-pdf>
+                    </div>
+                    <button mat-raised-button type="button" *ngIf="
+                    (rowData.correctiveActionState.code ==
+                          CorrectiveActionStateCode.TRT)
+                           && canEvaluate && (rowData.isReviewerUser || rowData.editAsReviewerRefferrent)
+                        " [routerLink]="[
+                          '/quality/corrective-actions/',
+                          rowData.correctiveActionID,
+                          'evaluate-ac'
+                        ]" matTooltip="Evaluar" [matTooltipPosition]="'above'"
+                      class="btn btn-success btn-link btn-sm btn-just-icon">
+                      <i class="material-icons">swap_vert</i>
+                    </button>
+                    <div *ngIf="
+                    (rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.VSE &&
+                            canRequestEvaluateDueDateExtention) 
+                            && (rowData.editAsReviewerRefferrent || rowData.isReviewerUser)
+                        ">
+                      <button mat-raised-button type="button" matTooltip="Solicitar extensión vencimiento evaluación"
+                        [routerLink]="['/quality/corrective-actions/',rowData.correctiveActionID,'overdue-evaluate-date']"
+                        [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">notifications_active</i>
+                      </button>
+                    </div>
+
+                    <div *ngIf="
+                    (rowData.correctiveActionState.code ==
+                            CorrectiveActionStateCode.VSP) &&
+                            (canRequestPlanningDueDateExtention)
+                            && (rowData.editAsResponsibleRefferrent || rowData.isResponsibleUser)
+                        ">
+                      <button mat-raised-button type="button" matTooltip="Solicitar extensión vencimiento planificación"
+                        [routerLink]="['/quality/corrective-actions/',rowData.correctiveActionID,'overdue-plannig']"
+                        [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">notifications_active</i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+                <tr>
+                  <td [attr.colspan]="columns.length + 2">
+                    <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+                      <!-- <div class="ui-g-12 ui-md-9"> -->
+                      <div class="table-responsive" *ngIf="rowData.tasks.length != 0">
+                        <table class="table">
+                          <thead class="text-primary">
+                            <tr>
+                              <th class="taskheadercolor">ID</th>
+                              <th class="taskheadercolor">Descripción</th>
+                              <th class="taskheadercolor">Usuario</th>
+                              <th class="taskheadercolor">Fecha</th>
+                              <th class="taskheadercolor">Evidencia</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let task of rowData.tasks">
+                              <td><a matTooltip="Ver detalles" [matTooltipPosition]="'above'"
+                                [routerLink]="['/quality/tasks/', task.taskID,'detail']">
+                                {{task.taskID}}</a></td>
+                              <td>{{task.description}}</td>
+                              <td>{{task.surname}}, {{task.firstname}}</td>
+                              <td>{{task.implementationPlannedDate | date: 'dd/MM/yyyy'}}</td>
+                              <td>{{task.requireEvidence ? 'Si' : 'No'}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!-- </div> -->
+                      </div>
+                      <div *ngIf="rowData.tasks.length === 0">
+                        Sin tareas asociadas
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="paginatorleft" let-state>
+                Mostrando registros del {{(state.page  * state.rows) + 1}} al {{state.rows * (state.page + 1)}} de un total de
+                {{state.totalRecords}} registros
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

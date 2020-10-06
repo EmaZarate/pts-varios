@@ -1,0 +1,83 @@
+# Hoshin Q CI/CD pipeline
+
+# YAML Schema
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema
+
+name: $(TeamProject)-$(SourceBranch)-$(Date:yyyyMMdd)$(Rev:.r)-DEV
+
+trigger: # source branch filter
+#- dev
+#- Release_Findings
+#- Release_Findings_DEMO
+#- Release_Findings_UAT
+
+pr: # target branch filter
+#- dev
+#- Release_Findings
+#- Release_Findings_DEMO
+#- Release_Findings_UAT
+
+pool:
+  vmImage: "vs2017-win2016"
+
+variables:
+  buildPlatform: "Any CPU"
+  buildConfiguration: "Release"
+  system.debug: true
+  solution: "**/*.sln"
+
+stages:
+  - stage: BuildAndTests
+    displayName: 'Build And Tests'
+    jobs:
+      - job: BuildJob
+        displayName: Build and Tests
+        steps:
+
+        #NPM Install globally
+        - task: Npm@1
+          displayName: 'Angular cli install'
+          inputs:
+            command: 'custom'
+            workingDir: 'Frontend'
+            customCommand: 'install -g @angular/cli'
+        
+        #NPM Installl package.json
+        - task: Npm@1
+          displayName: 'npm install'
+          inputs:
+            command: 'install'
+            workingDir: 'Frontend'
+        
+        #Ng Command building angular app
+        - task: CmdLine@2
+          displayName: 'ng command'
+          inputs:
+            script: 'ng build --prod'
+            workingDirectory: 'Frontend'
+        
+        #Restore Nuget
+        - task: DotNetCoreCLI@2
+          displayName: 'Restore Nuget'
+          inputs:
+            command: 'restore'
+            projects: '**/*.csproj'
+        
+        #Build Solution
+        - task: DotNetCoreCLI@2
+          displayName: 'Build Solution'
+          inputs:
+            command: 'build'
+            projects: '**/*.csproj'
+            arguments: '--configuration $(BuildConfiguration)'
+            workingDirectory: 'src/Hoshin.WebApi'
+        
+        #Test Execution
+        - task: DotNetCoreCLI@2
+          displayName: 'Test Execution'
+          inputs:
+            command: 'test'
+            projects: '**/*[Tt]ests/*.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+        
+        #Publish

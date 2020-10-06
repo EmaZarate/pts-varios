@@ -1,0 +1,66 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Puestos</h4>
+                    </div>
+                    <div class="card-body">
+                        <button *ngIf="canAdd" mat-raised-button type="submit"
+                            class="btn btn-separator btn-round btn-info btn-full-round pull-right"
+                            matTooltip="Nuevo puesto" [matTooltipPosition]="'above'" [routerLink]="['/core/jobs/new']">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Código</th>
+                                    <th>Activo</th>
+                                    <th>Acciones</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor='let job of jobs' [ngClass]="{'disabledState':!job.active}">
+                                        <td>
+                                            {{job.jobId}}
+                                        </td>
+                                        <td>
+                                            {{job.name}}
+                                        </td>
+                                        <td>
+                                            {{job.code}}
+                                        </td>
+                                        <td>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" [checked]='job.active'
+                                                        [disabled]="!canSwitch" [swal]="deactivateJob">
+                                                    <span class="toggle"></span>
+                                                </label>
+                                            </div>
+                                            <swal #deactivateJob
+                                                title="¿Desea {{job.active === true ? 'desactivar' : 'activar'}} el puesto {{job.name}}?"
+                                                type="question" [showCancelButton]="true" [focusCancel]="true" confirmButtonText="Confirmar" cancelButtonText="Cancelar" buttonsStyling="true"
+                                                (confirm)="updateJobState(job)">
+                                            </swal>
+                                        </td>
+                                        <td>
+                                            <button *ngIf="canEdit" mat-raised-button type="button"
+                                                [routerLink]="['/core/jobs/',job.jobId, 'edit']" matTooltip="Editar"
+                                                [matTooltipPosition]="'above'"
+                                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

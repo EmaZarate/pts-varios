@@ -1,0 +1,82 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div *ngIf="canReadFinding" class="col-lg-3 col-md-8 col-sm-8">
+        <div class="card card-stats">
+          <div class="card-header card-header-warning card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">search</i>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-category">Hallazgos</p>
+            <h3 class="card-title">{{totalFindingCount}}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons text-info">info</i>
+              <a routerLink="/quality/finding">Acceder...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="canReadFinding" class="col-lg-3 col-md-8 col-sm-8">
+        <div class="card card-stats">
+          <div class="card-header card-header-danger card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">bookmarks</i>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-category">Auditorías</p>
+            <h3 class="card-title">{{totalAudits}}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons text-info">info</i>
+              <a routerLink="/quality/audits">Acceder...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-8 col-sm-8">
+        <div class="card card-stats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">build</i>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-category">Ac. Correctivas</p>
+            <h3 class="card-title">{{totalCorrectiveActions}}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons text-info">info</i>
+              <a routerLink="/quality/corrective-actions">Acceder...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-8 col-sm-8">
+        <div class="card card-stats">
+          <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">assignment</i>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-category">Tareas</p>
+            <h3 class="card-title">{{totalTasks}}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons text-info">info</i>
+              <a routerLink="/quality/tasks/list">Acceder...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

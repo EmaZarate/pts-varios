@@ -1,0 +1,35 @@
+  .spineCircle.addSpineOk {
+    stroke: rgb(17, 126, 189);
+  }
+
+  .lineSpineAdd {
+    stroke: #000;
+    stroke-dasharray: 3, 3;
+  }
+
+  .spineCircle {
+    fill: none;
+    stroke: red;
+    stroke-width: 2px;
+  }
+
+  .removeUnderline a {
+    text-decoration: none;
+  }
+
+
+  .hideCustomButton {
+    visibility: hidden;
+  }
+
+  .showCustomButton {
+    visibility: visible;
+  }
+
+  .centerDiagram{
+    text-align: "center";
+  }
+
+  h2 {
+    flex-flow: column !important;
+  }

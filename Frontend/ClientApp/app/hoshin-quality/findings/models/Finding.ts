@@ -1,0 +1,40 @@
+import { FindingEvidence } from "./FindingEvidence";
+import { FindingsStates } from "./FindingsStates";
+export class Finding {
+    workflowId: String;
+    eventData: String;
+    findingId: Number;
+    findingID: Number;
+    id: Number;
+    description: String;
+    plantLocationId: Number;
+    sectorLocationId: Number;
+    plantTreatmentId: Number;
+    sectorTreatmentId: Number;
+    responsibleUserId: String;
+    responsibleUserID: String;
+    findingTypeId: Number;
+    expirationDate: any;
+    findingStateID: String;
+    emitterUserID: Number;
+    responsibleUserFullName: string;
+    sectorPlantTreatmentSectorName: string;
+    sectorPlantTreatmentPlantName: string;
+    sectorPlantTreatmentName: string;
+    findingTypeName: string;
+    findingTypeCode: string;
+    findingStateName: string;
+    findingStateCode: string;
+    causeAnalysis: string;
+    containmentAction:string;
+    comment: string;
+    finalComment: string;
+    state:String;
+    findingEvidences: FindingEvidence[];
+    fileNamesToDelete: String[];
+    reviewerUserID:String;
+    isInProcessWorkflow;
+    findingState: FindingsStates
+    findingStateColor;
+    findingComments:any;
+}

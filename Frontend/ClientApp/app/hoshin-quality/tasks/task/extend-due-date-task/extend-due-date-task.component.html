@@ -1,0 +1,46 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Extender la fecha de vencimiento</h4>
+                    </div>
+                    <div class="card-body">
+                        <dl>
+                            <dt>ID</dt>
+                            <dd>{{task?.taskID}}</dd>
+                            <dt>Descripción</dt>
+                            <dd>{{task?.description}}</dd>
+                            <dt>Usuario Responsable</dt>
+                            <dd>{{task?.responsibleUser?.name}} {{task?.responsibleUser?.surname}}</dd>
+                        </dl>
+                        <form [formGroup]="extendDueDateForm" (ngSubmit)="onSubmit()">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field>
+                                        <input matInput [matDatepicker]="picker" placeholder="Nueva fecha" formControlName="newDate" type="date">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker startView="multi-year" #picker></mat-datepicker>
+                                        <!-- <mat-error invalidmessage="documentsAnalysisDate">
+                          <div *invalidType="'required'"></div>
+                        </mat-error> -->
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <button mat-raised-button type="submit" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Aceptar" [matTooltipPosition]="'above'">
+                <i class="material-icons">done</i>
+              </button>
+                            <button mat-raised-button type="button" [routerLink]="['/quality/tasks/list']" class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+                <i class="material-icons">arrow_back</i>
+              </button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

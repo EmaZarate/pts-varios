@@ -1,0 +1,38 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Aprobar Reasignación</h4>
+          </div>
+          <div class="card-body">
+            <dl>
+              <dt>ID</dt>
+              <dd>{{_finding?.id}}</dd>
+              <dt>Descripción</dt>
+              <dd>{{_finding?.description}}</dd>
+              <dt>Planta</dt> 
+              <dd>{{_finding?.sectorPlantTreatmentPlantName}}</dd>
+              <dt>Sector</dt> 
+              <dd>{{_finding?.sectorPlantTreatmentSectorName}}</dd>
+              <dt>Responsable Actual</dt>
+              <dd>{{_finding?.responsibleUserFullName}}</dd>
+              <dt>Nuevo Responsable</dt>
+              <dd>{{_reassignmentUser?.surname}}, {{_reassignmentUser?.name}}</dd>
+            </dl>
+            <button mat-raised-button type="button" (click)="approve()" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Aprobar" [matTooltipPosition]="'above'">
+              <i class="material-icons">done</i>
+            </button>
+            <button mat-raised-button type="button" (click)="reject()" class="btn btn-separator btn-round btn-danger btn-full-round pull-right" matTooltip="Rechazar" [matTooltipPosition]="'above'">
+              <i class="material-icons">close</i>
+            </button>
+            <button mat-raised-button type="button" [routerLink]="['/quality/finding/list']" class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+              <i class="material-icons">arrow_back</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

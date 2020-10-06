@@ -1,0 +1,46 @@
+<div class="workgroupContainer">
+
+<div [formGroup]="workgroupForm">
+      <div class="togglebutton">
+        <label>
+          <span  class="workgroup-span">Incluir grupo de trabajo </span>
+          <input (click)="changeState()" formControlName="hasWorkgroup" type="checkbox">
+          <span class="toggle"></span>
+        </label>
+      </div>
+
+      <div class="messageCont">
+          <div [@hasWorkgroup_off]=currentState_off>
+              <span class="message">No se ha definido un grupo de trabajo</span>
+          </div>
+      </div>
+
+    </div>
+</div>
+
+<div [@hasWorkgroup_on]=currentState_on class="inputCont">
+
+  <tag-input class="select_tag"
+             [(ngModel)]="usersSelected"
+             [onlyFromAutocomplete]="true"
+             [placeholder]="'nuevo integrante'" 
+             [secondaryPlaceholder]="'Agregar integrantes'"
+             (onAdd)='change()'
+             (onRemove)='change()'
+             >
+
+      <tag-input-dropdown [showDropdownIfEmpty]="true"
+                    
+                          [dynamicUpdate]="false"
+                          [focusFirstElement]="true"
+                          [displayBy]="'value'"
+                          [identifyBy]="'id'"
+                          [autocompleteItems]="displayedUsers">
+
+          <ng-template id=result_ let-item="item" let-index="index">
+              {{ item.value }}
+          </ng-template>
+
+      </tag-input-dropdown>
+  </tag-input>
+</div>

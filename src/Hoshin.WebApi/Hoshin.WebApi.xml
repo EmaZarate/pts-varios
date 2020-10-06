@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hoshin.WebApi</name>
+    </assembly>
+    <members>
+        <member name="F:Hoshin.WebApi.Configurations.SwaggerConfiguration.EndpointDescription">
+            <summary>
+            <para>Description</para>
+            </summary>
+        </member>
+        <member name="F:Hoshin.WebApi.Configurations.SwaggerConfiguration.EndpointUrl">
+            <summary>
+            <para>Swagger json info</para>
+            </summary>
+        </member>
+        <member name="F:Hoshin.WebApi.Configurations.SwaggerConfiguration.ContactName">
+            <summary>
+            <para>Contact: MSTechnologies</para>
+            </summary>
+        </member>
+        <member name="F:Hoshin.WebApi.Configurations.SwaggerConfiguration.ContactUrl">
+            <summary>
+            <para>Contact url</para>
+            </summary>
+        </member>
+        <member name="F:Hoshin.WebApi.Configurations.SwaggerConfiguration.DocNameV1">
+            <summary>
+            <para>Name version</para>
+            </summary>
+        </member>
+        <member name="F:Hoshin.WebApi.Configurations.SwaggerConfiguration.DocInfoTitle">
+            <summary>
+            <para>Title</para>
+            </summary>
+        </member>
+        <member name="F:Hoshin.WebApi.Configurations.SwaggerConfiguration.DocInfoVersion">
+            <summary>
+            <para>Info version</para>
+            </summary>
+        </member>
+        <member name="F:Hoshin.WebApi.Configurations.SwaggerConfiguration.DocInfoDescription">
+            <summary>
+            <para>HoshinCloud Description</para>
+            </summary>
+        </member>
+    </members>
+</doc>

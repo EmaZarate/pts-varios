@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{29f3812a-5d3e-4326-9148-afd5acb39857}</ProjectGuid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hoshin.Core.Application\Hoshin.Core.Application.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.Logger\Hoshin.CrossCutting.Logger.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.SignalR\Hoshin.CrossCutting.SignalR.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.WorkflowCore\Hoshin.CrossCutting.WorkflowCore.csproj" />
+    <ProjectReference Include="..\Hoshin.Quality.Domain\Hoshin.Quality.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.1" />
+  </ItemGroup>
+
+</Project>

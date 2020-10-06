@@ -1,0 +1,161 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+        <div *ngIf="!emittingReport" class="row">
+            <div class="col-md-8 mr-auto ml-auto">
+                <div class="wizard-container">
+                    <div class="card card-wizard" data-color="blue" id="wizardProfile">
+                        <form action="" method="">
+                            <div class="card-header text-center">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <button mat-raised-button type="button" [routerLink]="['/quality/audits/list']" class="btn btn-round btn-full-round  pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+                                          <i class="material-icons">arrow_back</i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h3 #title class="card-title">Informe de auditoría</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-navigation">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item" *ngFor="let standard of audit?.auditStandards; let i = index">
+                                        <a class="nav-link" href="#{{standard?.standardID}}" data-toggle="tab" role="tab">
+                                          {{standard?.standard?.name}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div #wizard class="card-body">
+                                <div class="tab-content">
+                                    <h4>Aspectos a auditar</h4>
+                                    <div *ngFor="let standard of audit?.auditStandards; let i = index;" class="tab-pane" [ngClass]="{active: i ==0}" id="{{standard?.standardID}}">
+                                        <div *ngFor="let aspectStandard of auditStandardAspectSelected" id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+                                            <div *ngIf="aspectStandard.standardID == standard.standardID">
+                                                <h5 class="mb-0">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{aspectStandard?.aspectID + aspectStandard?.standardID}}" [attr.aria-expanded]="false" attr.aria-controls="collapse{{aspectStandard?.aspectID + aspectStandard?.standardID}}">
+                                                      {{aspectStandard?.aspect?.title}}
+                                                      <div class="actions">
+                                                        <button
+                                                          [disabled]="aspectStandard?.findings?.length> 0 || aspectStandard?.withoutFindings"
+                                                          (click)="setWithoutFindings(aspectStandard?.standardID, aspectStandard?.aspectID)"
+                                                          mat-icon-button><i matTooltip="Marcar sin hallazgos encontrados"
+                                                            class="material-icons action-button">done_all</i></button>
+                                                        <button mat-icon-button
+                                                          [disabled]="aspectStandard?.findings?.length> 0 || aspectStandard?.noAudited"
+                                                          (click)="setNoAudited(aspectStandard)">
+                                                          <i matTooltip="Marcar como no auditado"
+                                                            class="material-icons action-button disable">
+                                                            block
+                                                          </i>
+                                                        </button>
+                                                        <i matTooltip="Agregar hallazgo"
+                                                          [routerLink]="[aspectStandard?.standardID,'add',aspectStandard?.aspectID]"
+                                                          class="material-icons action-button">add</i>
+                                                        <i matTooltip="Ver más" class="material-icons action-button">keyboard_arrow_down</i>
+                                                      </div>
+                                                    </a>
+                                                </h5>
+
+                                                <div class="collapse" id="collapse{{aspectStandard?.aspectID + aspectStandard?.standardID}}" attr.aria-labelledby="headingOneDateRescheduling">
+                                                    <div *ngIf="aspectStandard?.findings?.length > 0">
+                                                        <table class="table">
+                                                            <tbody>
+                                                                <tr *ngFor="let finding of aspectStandard?.findings">
+                                                                    <td style="width:30%">{{finding.findingType.name}}</td>
+                                                                    <td style="width:40%" class="td-name">{{finding.description}}</td>
+                                                                    <td style="width:30%" class="td-actions text-right">
+                                                                        <button [routerLink]="[finding?.id,'edit']" mat-raised-button type="button" matTooltip="Editar Hallazgo" [matTooltipPosition]="'left'" class="btn btn-primary btn-link btn-sm">
+                                                                          <i class="material-icons">edit</i>
+                                                                        </button>
+                                                                        <button mat-raised-button type="button" (click)="deleteFinding(finding.id)" matTooltip="Eliminar hallazgo" [matTooltipPosition]="'left'" class="btn btn-danger btn-link btn-sm">
+                                                                          <i class="material-icons">close</i>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div *ngIf="!aspectStandard?.findings || aspectStandard?.findings?.length == 0">
+                                                        <div [ngClass]="show" role="tabpanel">
+                                                            <div *ngIf="aspectStandard?.noAudited" class="card-body">
+                                                                Este aspecto está marcado como No Auditado
+                                                            </div>
+                                                            <div *ngIf="aspectStandard?.withoutFindings" class="card-body">
+                                                                Este aspecto está marcado como Sin Hallazgos
+                                                            </div>
+                                                            <div *ngIf="!aspectStandard?.withoutFindings && !aspectStandard?.noAudited" class="card-body">
+                                                                No hay hallazgos cargados para este aspecto.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="mr-auto">
+                                    <button name="previous" mat-raised-button type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Anterior" [matTooltipPosition]="'above'">
+                                    <i class="material-icons">arrow_back</i>
+                                  </button>
+                                </div>
+                                <div class="ml-auto">
+                                    <button name="next" mat-raised-button type="button" class="btn btn-next btn-fill btn-info btn-wd disabled btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Siguiente" [matTooltipPosition]="'above'">
+                                      <i class="material-icons">arrow_forward</i>
+                                    </button>
+                                    <button name="finish" (click)="onFinishAspects()" style="display: none;" mat-raised-button type="button" class="btn btn-finish btn-fill btn-info btn-wd disabled btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Emitir informe de auditorías"
+                                        [matTooltipPosition]="'above'" matTooltip="{{language_closeButton}}">
+                                      <i class="material-icons">done</i>
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="emittingReport" class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Emitir Informe de Auditoría</h4>
+
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="emitReportForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                        <textarea formControlName="conclusion" rows="5" matInput placeholder="Conclusiones"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                        <textarea formControlName="recomendation" rows="5" matInput placeholder="Observaciones y recomendaciones"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <button name="approve" mat-raised-button type="button" (click)="cancelSubmit()" class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+                <i class="material-icons">arrow_back</i>
+              </button>
+                            <button mat-raised-button type="submit" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip={{language_closeButton}} [matTooltipPosition]="'above'">
+                <i class="material-icons">done</i>
+              </button>
+
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

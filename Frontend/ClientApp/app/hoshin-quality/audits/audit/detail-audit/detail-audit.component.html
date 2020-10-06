@@ -1,0 +1,344 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Auditoría {{_audit?.auditID}}</h4>
+                        <p class="card-category">Detalles de la Auditoría</p>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="card mt-0">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h6>Estado</h6>
+                                        <p>{{_audit?.auditState.name}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h6>Sector - Planta</h6>
+                                        <p>{{_audit?.sectorPlant.sector.name }} - {{_audit?.sectorPlant.plant.name }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <h6>Normas</h6>
+                                        <div *ngFor="let _standard of _audit?.auditStandards;">
+                                            {{_standard.standard.name}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h6>Tipo auditoría</h6>
+                                        <p> {{_audit?.auditType.name}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h6>Auditor</h6>
+                                        <p><span *ngIf="_audit?.auditor == null">{{_audit?.externalAuditor}}</span></p>
+                                        <p><span *ngIf="_audit?.auditor != null">{{_audit.auditor?.name}} {{_audit.auditor?.surname}}</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="row" *ngIf="_audit?.auditTeam">
+                                    <div class="col-md-12">
+                                        <h6>Grupo auditor</h6>
+                                        <p> {{_audit?.auditTeam}}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="card my-0">
+                            <div class="card-body">
+
+                                <div class="row" *ngIf="_audit?.auditInitDate ">
+                                    <div class="col-md-12 mb-3">
+                                        <h6>Fecha de inicio</h6>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <span><i class="material-icons">calendar_today</i>
+                      {{"   "+(_audit?.auditInitDate | date: 'dd/MM/yyyy')}}
+                    </span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span class="pull-left"><i class="material-icons">access_time</i>
+                      {{"  "+(_audit?.auditInitTime | date: 'HH:mm') + " Hs"}}
+                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row" *ngIf="_audit?.documentsAnalysisDate && 
+            ( _audit?.auditState.code == auditStateCode.PPA 
+            || _audit?.auditState.code == auditStateCode.PRZ 
+            || _audit?.auditState.code == auditStateCode.PLA 
+            || _audit?.auditState.code == auditStateCode.INI 
+            || _audit?.auditState.code == auditStateCode.IPA
+            || _audit?.auditState.code == auditStateCode.IAP
+            || _audit?.auditState.code == auditStateCode.IRZ )">
+                                    <div class="col-md-12 mb-3">
+                                        <h6>Analisis de Documentación</h6>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <span><i class="material-icons">calendar_today</i>
+                      {{"   "+(_audit?.documentsAnalysisDate | date: 'dd/MM/yyyy')}}
+                    </span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span class="pull-left"><i class="material-icons">timer</i>
+                      {{"  "+(_audit?.documentAnalysisDuration) + " Hs"}}
+                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row" *ngIf="_audit?.closeMeetingDate && 
+            ( _audit?.auditState.code == auditStateCode.PPA 
+            || _audit?.auditState.code == auditStateCode.PRZ 
+            || _audit?.auditState.code == auditStateCode.PLA 
+            || _audit?.auditState.code == auditStateCode.INI 
+            || _audit?.auditState.code == auditStateCode.IPA
+            || _audit?.auditState.code == auditStateCode.IAP
+            || _audit?.auditState.code == auditStateCode.IRZ )">
+                                    <div class="col-md-12 mb-3">
+                                        <h6>Reunión de cierre</h6>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <span><i class="material-icons">calendar_today</i>
+                      {{"   "+(_audit?.closeMeetingDate | date: 'dd/MM/yyyy')}}
+                    </span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span class="pull-left"><i class="material-icons">timer</i>
+                      {{"  "+(_audit?.closeMeetingDuration) + " Hs"}}
+                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row" *ngIf="_audit?.auditFinishDate && 
+            ( _audit?.auditState.code == auditStateCode.PPA 
+            || _audit?.auditState.code == auditStateCode.PRZ 
+            || _audit?.auditState.code == auditStateCode.PLA 
+            || _audit?.auditState.code == auditStateCode.INI 
+            || _audit?.auditState.code == auditStateCode.IPA
+            || _audit?.auditState.code == auditStateCode.IAP
+            || _audit?.auditState.code == auditStateCode.IRZ )">
+                                    <div class="col-md-12 mb-3">
+                                        <h6>Fecha de fin</h6>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <span><i class="material-icons">calendar_today</i>
+                      {{"   "+(_audit?.auditFinishDate | date: 'dd/MM/yyyy')}}
+                    </span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span class="pull-left"><i class="material-icons">access_time</i>
+                      {{"  "+(_audit?.auditFinishTime | date: 'HH:mm') + " Hs"}}
+                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row" *ngIf="_audit?.closeDate && 
+              ( _audit?.auditState.code == auditStateCode.PPA 
+              || _audit?.auditState.code == auditStateCode.PRZ 
+              || _audit?.auditState.code == auditStateCode.PLA 
+              || _audit?.auditState.code == auditStateCode.INI 
+              || _audit?.auditState.code == auditStateCode.IPA
+              || _audit?.auditState.code == auditStateCode.IAP
+              || _audit?.auditState.code == auditStateCode.IRZ )">
+                                    <div class="col-md-12 mb-3">
+                                        <h6>Fecha de Cierre</h6>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <span><i class="material-icons">calendar_today</i>
+                      {{"   "+(_audit?.closeDate | date: 'dd/MM/yyyy')}}
+                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+                                            <div class="card-header" role="tab" id="headingOneDateRescheduling">
+                                                <h5 class="mb-0">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOneDateRescheduling" [attr.aria-expanded]="false" attr.aria-controls="collapseOneDateRescheduling">
+                            Reprogramaciones
+                            <i class="material-icons">keyboard_arrow_down</i>
+                          </a>
+                                                </h5>
+                                            </div>
+                                            <div class="collapse" id="collapseOneDateRescheduling" attr.aria-labelledby="headingOneDateRescheduling">
+                                                <div *ngFor="let comment of _audit?.auditReschedulingHistories; let i = index">
+                                                    <div [ngClass]="show" role="tabpanel">
+                                                        <div class="card-body mb-1">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <span><i class="material-icons">calendar_today</i>
+                                    {{"   "+(comment?.dateRescheduling | date: 'dd/MM/yyyy')}}
+                                  </span>
+                                                                </div>
+                                                                <!-- <div class="col-md-4">
+                                  <span class="pull-left"><i class="material-icons">timer</i>
+                                    {{"  "+(comment?.dateRescheduling | date: 'HH:mm:ss') + " Hs"}}
+                                  </span>
+                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="_audit?.auditReschedulingHistories?.length <= 0">
+                                                    <div class="card-body">
+                                                        Esta Auditoría no posee Reprogramaciones
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <mat-card class="mb-3" *ngIf="
+                ( _audit?.auditState.code == auditStateCode.PPA 
+                || _audit?.auditState.code == auditStateCode.PRZ 
+                || _audit?.auditState.code == auditStateCode.PLA 
+                || _audit?.auditState.code == auditStateCode.INI 
+                || _audit?.auditState.code == auditStateCode.IPA
+                || _audit?.auditState.code == auditStateCode.IAP
+                || _audit?.auditState.code == auditStateCode.IRZ )">
+                            <div class="tab-content">
+                                <h6>Aspectos a auditar</h6>
+                                <div *ngFor="let standard of _audit?.auditStandards; let i = index;" class="tab-pane" [ngClass]="{active: i ==i}" id="{{standard?.standardID}}">
+                                    <div>
+                                        <div class="mb-2">
+                                            {{standard?.standard?.name}}
+                                        </div>
+
+                                        <div *ngIf="auditStandardAspectSelected.length == 0">
+                                            Usted no posee el permiso para visualizar aspectos
+                                        </div>
+
+                                        <div *ngFor="let aspectStandard of auditStandardAspectSelected" [ngClass]="{'valid': aspectStandard.standardID != standard.standardID}" id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+
+                                            <div *ngIf="aspectStandard.standardID == standard.standardID" class="ml-2">
+                                                <h5 class="mb-0">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{aspectStandard?.aspectID + aspectStandard?.standardID}}" [attr.aria-expanded]="false" attr.aria-controls="collapse{{aspectStandard?.aspectID + aspectStandard?.standardID}}">
+                            {{aspectStandard?.aspect?.title}}
+
+                            <div class="actions">
+                              <i matTooltip="Ver más" class="material-icons action-button">keyboard_arrow_down</i>
+                            </div>
+
+                          </a>
+                                                </h5>
+
+                                                <div class="collapse" id="collapse{{aspectStandard?.aspectID + aspectStandard?.standardID}}" attr.aria-labelledby="headingOneDateRescheduling">
+                                                    <div *ngIf="aspectStandard?.findings?.length > 0">
+
+                                                        <table class="table mb-0 mt-0">
+                                                            <tbody>
+                                                                <tr *ngFor="let finding of aspectStandard?.findings">
+                                                                    <td style="width:40%">{{finding.findingType.name}}</td>
+                                                                    <td style="width:50%" class="td-name">{{finding.description}}</td>
+                                                                    <td style="width:10%" class="td-actions text-right">
+
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <div *ngIf="!aspectStandard?.findings || aspectStandard?.findings?.length == 0">
+                                                        <div [ngClass]="show" role="tabpanel">
+                                                            <div *ngIf="aspectStandard?.noAudited" class="card-body">
+                                                                Este aspecto está marcado como No Auditado
+                                                            </div>
+                                                            <div *ngIf="aspectStandard?.withoutFindings" class="card-body">
+                                                                Este aspecto está marcado como Sin Hallazgos
+                                                            </div>
+                                                            <div *ngIf="!aspectStandard?.withoutFindings && !aspectStandard?.noAudited" class="card-body">
+                                                                No hay hallazgos cargados para este aspecto.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+
+
+                        <mat-card class="mb-3" *ngIf=" _audit?.conclusion &&
+            (_audit?.auditState.code == auditStateCode.IPA
+            || _audit?.auditState.code == auditStateCode.IAP
+            || _audit?.auditState.code == auditStateCode.IRZ )">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h6>Conclusiones</h6>
+                                    <p>{{_audit?.conclusion}}</p>
+                                </div>
+                            </div>
+                        </mat-card>
+                        <mat-card class="mb-3" *ngIf=" _audit?.recomendations &&
+            (_audit?.auditState.code == auditStateCode.IPA
+            || _audit?.auditState.code == auditStateCode.IAP
+            || _audit?.auditState.code == auditStateCode.IRZ )">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h6>Observaciones y recomendaciones</h6>
+                                    <p>{{_audit?.recomendations}}</p>
+                                </div>
+                            </div>
+                        </mat-card>
+                        <mat-card class="mb-3" *ngIf=" _audit?.approvePlanComments &&
+            (_audit?.auditState.code == auditStateCode.PRZ
+            || _audit?.auditState.code == auditStateCode.IRZ )">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h6>Comentario del rechazo</h6>
+                                    <p>{{_audit?.approvePlanComments}}</p>
+                                </div>
+                            </div>
+                        </mat-card>
+
+                        <button mat-raised-button type="button" [routerLink]="['/quality/audits/list']" class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+              <i class="material-icons">arrow_back</i>
+            </button>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 col-sm-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Empresa {{company?.businessName}}</h4>
+                        <p class="card-category">Editar Empresa</p>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Razón Social" formControlName="businessName" type="text">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="CUIT" formControlName="cuit" type="text">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Dirección" formControlName="address" type="text">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Teléfono" formControlName="phoneNumber" type="text">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                    <div class="fileinput fileinput-new text-center col-md-12" data-provides="fileinput">
+                                        <div class="fileinput-new thumbnail col-md-6">
+                                            <img [src]="[srcLogo]"  onError="this.src='/assets/img/default-avatar.png';">
+                                        </div>
+                                        <div class="fileinput-preview fileinput-exists thumbnail col-md-6"></div>
+                                        <div class="float-right col-md-5">
+                                            <span class="btn btn-rose btn-round btn-file round-span">
+                                                <span class="fileinput-new"><i class="material-icons">edit</i></span>
+                                                <span class="fileinput-exists"><i class="material-icons">refresh</i></span>
+                                                <input matTooltip="Editar" [matTooltipPosition]="'above'" type="file" formControlName="logo" name="..." (change)="changeListener($event)" accept=".jpg, .png" />
+                                            </span>
+                                            <a matTooltip="Eliminar" [matTooltipPosition]="'above'" href="javascript:void(0)" class="btn btn-danger btn-round fileinput-exists round" data-dismiss="fileinput" (click)="limpiarImagen($event)"><i class="fa fa-times"></i></a>
+                                        </div>
+                                    </div>
+                            </div>
+                            <button mat-raised-button type="submit" class="btn btn-separator btn-round btn-info btn-full-round pull-right"
+                                matTooltip="Aceptar" [matTooltipPosition]="'above'">
+                                <i class="material-icons">done</i>
+                            </button>
+                            <button mat-raised-button type="button" [routerLink]="['/core/company']" class="btn btn-separator btn-round btn-full-round pull-left"
+                                matTooltip="Volver" [matTooltipPosition]="'above'">
+                                <i class="material-icons">arrow_back</i>
+                            </button>
+                            <div class="clearFix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

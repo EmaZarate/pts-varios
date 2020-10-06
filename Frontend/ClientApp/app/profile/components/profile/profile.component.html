@@ -1,0 +1,95 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card card-profile">
+          <div class="card-avatar">
+            <a href="javascript:void(0)" >
+            <img class="img" [src]="img" onError="this.src='/assets/img/default-avatar.png';"/>     
+            </a>
+          </div>
+          <div class="card-body">
+            <br>
+            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+              <div class="row" *ngIf="isEdit">
+                <div class="col-md-12">
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                      <div>
+                          <span class="btn btn-round btn-rose btn-file round-span">
+                            <span matTooltip="Editar" [matTooltipPosition]="'above'" class="fileinput-new"><i class="material-icons">edit</i></span>
+                            <span class="fileinput-exists"><i class="material-icons">edit</i></span>
+                            <input matTooltip="Editar" [matTooltipPosition]="'above'" type="file" name="..." (change)="changePhoto($event)" accept=".jpg, .png, .jpeg, .jpe, .jfif, .gif"
+                              formControlName="photo" />
+                          </span>
+                          
+                          <a href="javascript:void(0)" matTooltip="Eliminar" [matTooltipPosition]="'above'" class="btn btn-danger btn-round fileinput-exists round" data-dismiss="fileinput" (click)="deletedPhoto()"><i class="fa fa-times"></i></a>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Nombre</label>
+                    <input type="text" class="form-control"  formControlName="firstname">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Apellido</label>
+                    <input type="text" class="form-control"  formControlName="surname">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Email</label>
+                    <input type="text" class="form-control" formControlName="email">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Teléfono</label>
+                    <input type="text" class="form-control" formControlName="phone">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Dirección</label>
+                    <input type="text" class="form-control" formControlName="address">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Sector</label>
+                    <input type="text" class="form-control" formControlName="sector">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Planta</label>
+                    <input type="text" class="form-control" formControlName="plant">
+                  </div>
+                </div>
+              </div>
+              <button *ngIf="!isEdit" [routerLink]="['/profile/edit']" mat-raised-button type="button" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Editar" [matTooltipPosition]="'above'">
+                <i class="material-icons">edit</i>
+              </button>
+              <button *ngIf="isEdit" mat-raised-button type="submit" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Aceptar" [matTooltipPosition]="'above'">
+                <i class="material-icons">done</i>
+              </button>
+              <button [routerLink]="['/home']" mat-raised-button type="button" class="btn btn-separator btn-round btn-full-round pull-left"
+                matTooltip="Volver" [matTooltipPosition]="'above'">
+                <i class="material-icons">arrow_back</i>
+              </button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

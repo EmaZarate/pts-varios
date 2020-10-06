@@ -1,0 +1,61 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title ">Estados de Aspectos</h4>
+                    </div>
+                    <div class="card-body">
+                        <button mat-raised-button type="submit" *ngIf="canAdd" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Nuevo aspecto" [matTooltipPosition]="'above'" [routerLink]="['/quality/audits/config/aspect-states/new']">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Color</th>
+                                    <th>Activo</th>
+                                    <th>Acciones</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor='let state of aspectsStates' [ngClass]="{'disabledState':!state.active}">
+                                        <td>
+                                            {{(state.id)}}
+                                        </td>
+                                        <td>
+                                            {{state.name}}
+                                        </td>
+                                        <td>
+                                            <div class="box-color" [style.backgroundColor]='state.colour'></div>
+                                        </td>
+                                        <td>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" [checked]='state.active'
+                                                    [disabled]="!canSwitch" [swal]="desactivateState">
+                                                    <span class="toggle"></span>
+                                                </label>
+                                            </div>
+                                            <swal #desactivateState title="¿Desea {{state.active === true ? 'desactivar' : 'activar'}} el estado {{state.name}}?" 
+                                            type="question" [showCancelButton]="true" [focusCancel]="true" confirmButtonText="Confirmar" cancelButtonText="Cancelar" buttonsStyling="true"
+                                            (confirm)="updateStateActive(state)">
+                                            </swal>
+                                        </td>
+                                        <td>
+                                            <button mat-raised-button type="button" *ngIf="canEdit" [routerLink]="['/quality/audits/config/aspect-states/',state.id,'edit']" matTooltip="Editar" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+.user-logged {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#caret-user-logged {
+    top: 14px;
+}

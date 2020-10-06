@@ -1,0 +1,30 @@
+p  {
+    text-align: left;
+    margin-top: 5%;;
+    margin-bottom: 0;
+}
+
+.centerLabel{
+    vertical-align: super;
+    margin-left: 2%;
+}
+hr{
+    border: 1;
+	height: 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.marginAspects{
+   margin-bottom: 1%
+}
+.borderAspect{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.marginButtonWithOutAspect{
+    margin-bottom: 3%;
+}
+
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}

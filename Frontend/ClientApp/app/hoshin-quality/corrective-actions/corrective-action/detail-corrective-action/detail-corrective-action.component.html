@@ -1,0 +1,284 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Acción Correctiva {{ _correctiveAction?.correctiveActionID}}</h4>
+            <p class="card-category">Detalles de la acción correctiva</p>
+          </div>
+
+          <div class="card-body">
+            <div class="row" *ngIf="_correctiveAction?.description">
+              <div class="col-md-12">
+                <h6>Descripción</h6>
+                <p> {{ _correctiveAction?.description }} </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.finding?.description">
+              <div class="col-md-12">
+                <h6>Descripción del hallazgo</h6>
+                <p> {{ _correctiveAction?.finding?.description }} </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.finding?.findingTypeName">
+              <div class="col-md-12">
+                <h6>Tipo de hallazgo</h6>
+                <p> {{ _correctiveAction?.finding?.findingTypeName }} </p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <h6>Estado</h6>
+                <p>
+                  {{ _correctiveAction?.correctiveActionState.name }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.sectorPlantLocation?.plant?.name">
+              <div class="col-md-12">
+                <h6>Planta ubicación</h6>
+                <p>
+                  {{ _correctiveAction?.sectorPlantLocation?.plant?.name }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.sectorPlantLocation?.sector?.name">
+              <div class="col-md-12">
+                <h6>Sector ubicación</h6>
+                <p>
+                  {{ _correctiveAction?.sectorPlantLocation?.sector?.name }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.sectorPlantTreatment?.plant?.name">
+              <div class="col-md-12">
+                <h6>Planta tratamiento</h6>
+                <p>
+                  {{ _correctiveAction?.sectorPlantTreatment?.plant?.name }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.sectorPlantTreatment?.sector?.name">
+              <div class="col-md-12">
+                <h6>Sector tratamiento</h6>
+                <p>
+                  {{ _correctiveAction?.sectorPlantTreatment?.sector?.name }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.responisbleUser?.name">
+              <div class="col-md-12">
+                <h6>Responsable asignado</h6>
+                <p>
+                  {{ _correctiveAction?.responsibleUserFullName }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.reviewerUser?.name">
+              <div class="col-md-12">
+                <h6>Evaluador</h6>
+                <p>
+                  {{ _correctiveAction?.reviewerUserFullName }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.deadlineDatePlanification && 
+              ( _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.ABI 
+              || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VSP 
+              || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.EFP )">
+              <div class="col-md-12">
+                <h6>Fecha vencimiento de planificación</h6>
+                <p>
+                  {{ _correctiveAction?.deadlineDatePlanification | date: 'dd/MM/yyyy' }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.userCorrectiveActions.length > 0 && 
+            ( _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.PLN 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VST 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.TRT 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VSE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.EFE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.CER )">
+              <div class="col-md-12">
+                <h6>Grupo de trabajo</h6>
+                <div *ngFor="let user of _correctiveAction?.userCorrectiveActions">
+                  <p>
+                    {{ user.users.fullName }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.rootReason && 
+            ( _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.PLN 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VST 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.TRT 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VSE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.EFE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.CER )">
+              <div class="col-md-12">
+                <h6>Causa raíz</h6>
+                <p>
+                  {{ _correctiveAction?.rootReason }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf=" 
+            ( _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.PLN 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VST 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.TRT 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VSE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.EFE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.CER )">
+              <div class="col-md-12">
+                <h6>Diagrama de Ishikawa</h6>
+                <p [swal]="fishboneDiagram" class="showFishbone">
+                  <a  href="">Ver</a>
+                </p>
+                <swal #fishboneDiagram [options]="{ width: '80%' }" [style]>
+                  <div *swalPartial>
+                    <app-fishbone [categoriesFishbone]="fishboneCategories" [correctiveActionID]="_correctiveAction?.correctiveActionID"
+                      [correctiveActionFishbone]="_correctiveAction?.correctiveActionFishbone" [rootReason]="_correctiveAction?.rootReason"
+                      [reedOnly]="true">
+                    </app-fishbone>
+                  </div>
+                </swal>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.impact && 
+            ( _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.PLN 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VST 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.TRT 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VSE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.EFE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.CER )">
+              <div class="col-md-12">
+                <h6>Análisis de impacto</h6>
+                <p>
+                  {{ _correctiveAction?.impact }}
+                </p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.evidences.length > 0 && 
+            ( _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.PLN 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VST 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.TRT 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VSE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.EFE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.CER )">
+              <div class="col-md-12 evidences">
+                <h6>Evidencias</h6>
+                <div *ngFor="let evidence of _correctiveAction?.evidences">
+                  <a href="{{ evidence.url }}">
+                    <i class="material-icons file-icon download-file-icon" matTooltip="Descargar">vertical_align_bottom</i>
+                  </a> 
+                  {{ evidence.fileName }}      
+                </div>           
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.maxDateImplementation && 
+            ( _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.PLN 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VST )">
+              <div class="col-md-12">
+                <h6>Fecha total de implementación</h6>
+                  <p>
+                    {{ _correctiveAction?.maxDateImplementation | date: 'dd/MM/yyyy' }}
+                  </p>       
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.effectiveDateImplementation && 
+            ( _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.TRT 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VSE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.EFE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.CER )">
+              <div class="col-md-12">
+                <h6>Fecha real de implementación total</h6>
+                  <p>
+                    {{ _correctiveAction?.effectiveDateImplementation | date: 'dd/MM/yyyy' }}
+                  </p>       
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.maxDateEfficiencyEvaluation && 
+            ( _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.PLN 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VST 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.TRT 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VSE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.EFE )">
+              <div class="col-md-12">
+                <h6>Fecha inicio evaluación</h6>
+                  <p>
+                    {{ _correctiveAction?.maxDateEfficiencyEvaluation | date: 'dd/MM/yyyy' }}
+                  </p>       
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.deadlineDateEvaluation && 
+            ( _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.TRT 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.VSE 
+            || _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.EFE )">
+              <div class="col-md-12">
+                <h6>Fecha vencimiento de evaluación</h6>
+                  <p>
+                    {{ _correctiveAction?.deadlineDateEvaluation | date: 'dd/MM/yyyy' }}
+                  </p>       
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.dateTimeEfficiencyEvaluation && _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.CER">
+              <div class="col-md-12">
+                <h6>Fecha real de evaluación</h6>
+                  <p>
+                    {{ _correctiveAction?.dateTimeEfficiencyEvaluation | date: 'dd/MM/yyyy' }}
+                  </p>       
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.correctiveActionState.code == correctiveActionStateCode.CER">
+              <div class="col-md-12">
+                <h6>Resultado de la evaluación</h6>
+                  <p>
+                    {{ _correctiveAction.isEffective ? 'Eficaz' : 'No Eficaz' }}
+                  </p>       
+              </div>
+            </div>
+
+            <div class="row" *ngIf="_correctiveAction?.evaluationCommentary && _correctiveAction?.correctiveActionState.code == correctiveActionStateCode.CER">
+              <div class="col-md-12">
+                <h6>Comentarios del evaluador</h6>
+                  <p>
+                    {{ _correctiveAction.evaluationCommentary }}
+                  </p>       
+              </div>
+            </div>
+
+            <button mat-raised-button type="button" [routerLink]="['/quality/corrective-actions/list']"
+              class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver"
+              [matTooltipPosition]="'above'">
+              <i class="material-icons">arrow_back</i>
+            </button>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

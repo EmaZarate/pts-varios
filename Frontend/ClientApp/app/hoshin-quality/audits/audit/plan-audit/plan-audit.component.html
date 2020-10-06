@@ -1,0 +1,401 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-8 mr-auto ml-auto">
+                <!--      Wizard container        -->
+                <div class="wizard-container">
+                    <div class="card card-wizard" data-color="blue" id="wizardProfile">
+                        <form [formGroup]="type" action="" method="">
+                            <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
+                            <div class="card-header text-center">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <button mat-raised-button type="button" [routerLink]="['/quality/audits/list']" class="btn btn-round btn-full-round pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+                      <i class="material-icons">arrow_back</i>
+                    </button>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h3 #title class="card-title">Planificar Auditoría</h3>
+                                        <!-- <h5 class="card-description">El rol servirá para dar permisos en la aplicación.</h5> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-navigation">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#basic" data-toggle="tab" role="tab">
+                      Fechas y Horas
+                    </a>
+                                    </li>
+                                    <li class="nav-item" *ngFor="let standard of audit?.auditStandards; let i = index">
+                                        <a class="nav-link" href="#{{standard?.standardID}}" data-toggle="tab" role="tab" (click)="showPanel(standard.standardID)">
+                      {{standard?.standard?.name}}
+                    </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#finish" data-toggle="tab" role="tab">
+                      Confirmación
+                    </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div #wizard class="card-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="basic">
+                                        <h5 class="info-text"> Ingrese las fechas y horas de la auditoría</h5>
+                                        <div class="row justify-content-center">
+
+                                            <div class="col-lg-10 mt-3">
+                                                <p>Grupo Auditor</p>
+                                                <div class="input-group form-control-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                              <i class="material-icons">people</i>
+                            </span>
+                                                    </div>
+                                                    <mat-form-field class="example-full-width">
+                                                        <input formControlName="auditGroup" matInput placeholder="Grupo Auditor" type="text" id="exampleemalil" name="email">
+                                                        <mat-error invalidmessage="auditGroup">
+                                                            <div *invalidType="'required'">Campo obligatorio</div>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-10 mt-3">
+                                                <p>Análisis de Documentación</p>
+                                                <div class="input-group form-control-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                              <i class="material-icons">date_range</i>
+                            </span>
+                                                    </div>
+                                                    <mat-form-field>
+                                                        <input formControlName="documentsAnalysisDate" matInput [matDatepicker]="picker" placeholder="Fecha Análisis de Documentación" type="date">
+                                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                        <mat-datepicker startView="multi-year" #picker></mat-datepicker>
+                                                        <mat-error invalidmessage="documentsAnalysisDate">
+                                                            <div *invalidType="'required'">Campo obligatorio</div>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10 mt-3">
+                                                <div class="input-group form-control-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                              <i matTooltip="Horas" [matTooltipPosition]="'above'" class="material-icons">timer</i>
+                            </span>
+                                                    </div>
+                                                    <mat-form-field class="example-full-width">
+                                                        <input formControlName="documentAnalysisDuration" placeholder="Duración en horas" matInput type="number" max="24" min="1" id="exampleemalil" name="">
+                                                        <mat-error invalidmessage="documentAnalysisDuration">
+                                                            <div *invalidType="'required'">Campo obligatorio</div>
+                                                            <div *invalidType="'min'">La duración en horas debe ser mayor a 1 y menor igual 24</div>
+                                                            <div *invalidType="'max'">La duración en horas debe ser mayor a 1 y menor igual 24</div>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <!-- <br><br><br><br> -->
+                                            <div class="col-lg-10 mt-3">
+                                                <p>Inicio de la Auditoría</p>
+                                                <div class="input-group form-control-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                              <i class="material-icons">date_range</i>
+                            </span>
+                                                    </div>
+                                                    <mat-form-field>
+                                                        <input formControlName="auditInitDate" matInput [matDatepicker]="pickerEmitter" placeholder="Fecha Inicio Auditoría" type="date">
+                                                        <mat-datepicker-toggle matSuffix [for]="pickerEmitter"></mat-datepicker-toggle>
+                                                        <mat-datepicker startView="multi-year" #pickerEmitter></mat-datepicker>
+                                                        <mat-error invalidmessage="auditInitDate">
+                                                            <div *invalidType="'required'">Campo obligatorio</div>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10 mt-3">
+                                                <div class="input-group form-control-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                              <i class="material-icons">timer</i>
+                            </span>
+                                                    </div>
+                                                    <mat-form-field class="example-full-width">
+                                                        <input formControlName="auditInitTime" matInput type="time" id="" name="email">
+                                                        <mat-error invalidmessage="auditInitTime">
+                                                            <div *invalidType="'required'">Campo obligatorio</div>
+                                                            <div *invalidType="'min'">La duración en horas debe ser mayor a 1 y menor igual 24</div>
+                                                            <div *invalidType="'max'">La duración en horas debe ser mayor a 1 y menor igual 24</div>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-10 mt-3">
+                                                <p>Reunión de Cierre</p>
+                                                <div class="input-group form-control-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                              <i class="material-icons">date_range</i>
+                            </span>
+                                                    </div>
+                                                    <mat-form-field>
+                                                        <input formControlName="mettingCloseDate" matInput [matDatepicker]="pickerClose" placeholder="Fecha Reunión de cierre" type="date">
+                                                        <mat-datepicker-toggle matSuffix [for]="pickerClose"></mat-datepicker-toggle>
+                                                        <mat-datepicker startView="multi-year" #pickerClose></mat-datepicker>
+                                                        <mat-error invalidmessage="mettingCloseDate">
+                                                            <div *invalidType="'required'">Campo obligatorio</div>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10 mt-3">
+                                                <div class="input-group form-control-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                              <i matTooltip="Horas" [matTooltipPosition]="'above'" class="material-icons">timer</i>
+                            </span>
+                                                    </div>
+                                                    <mat-form-field class="example-full-width">
+                                                        <input formControlName="mettingCloseTime" placeholder="Duración en horas" matInput type="number" id="" name="email">
+                                                        <mat-error invalidmessage="mettingCloseTime">
+                                                            <div *invalidType="'required'">Campo obligatorio</div>
+                                                            <div *invalidType="'min'">La duración en horas debe ser mayor a 1 y menor igual 24</div>
+                                                            <div *invalidType="'max'">La duración en horas debe ser mayor a 1 y menor igual 24</div>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-10 mt-3">
+                                                <p>Fin de la Auditoría</p>
+                                                <div class="input-group form-control-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                              <i class="material-icons">date_range</i>
+                            </span>
+                                                    </div>
+                                                    <mat-form-field>
+                                                        <input formControlName="auditFinishDate" matInput [matDatepicker]="pickerFinAudit" placeholder="Fecha Fin Auditoría" type="date">
+                                                        <mat-datepicker-toggle matSuffix [for]="pickerFinAudit"></mat-datepicker-toggle>
+                                                        <mat-datepicker startView="multi-year" #pickerFinAudit></mat-datepicker>
+                                                        <mat-error invalidmessage="auditFinishDate">
+                                                            <div *invalidType="'required'">Campo obligatorio</div>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10 mt-3">
+                                                <div class="input-group form-control-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                              <i class="material-icons">timer</i>
+                            </span>
+                                                    </div>
+                                                    <mat-form-field class="example-full-width">
+                                                        <input formControlName="auditFinishTime" matInput type="time" id="" name="email">
+                                                        <mat-error invalidmessage="auditFinishTime">
+                                                            <div *invalidType="'required'">Campo obligatorio</div>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-10 mt-3">
+                                                <p>Cierre de Plan</p>
+                                                <div class="input-group form-control-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                              <i class="material-icons">date_range</i>
+                            </span>
+                                                    </div>
+                                                    <mat-form-field>
+                                                        <input formControlName="planCloseDate" matInput [matDatepicker]="pickerClosePlan" placeholder="Fecha cierre de plan" type="date">
+                                                        <mat-datepicker-toggle matSuffix [for]="pickerClosePlan"></mat-datepicker-toggle>
+                                                        <mat-datepicker startView="multi-year" #pickerClosePlan></mat-datepicker>
+                                                        <mat-error invalidmessage="planCloseDate">
+                                                            <div *invalidType="'required'">Campo obligatorio</div>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div *ngFor="let standard of audit?.auditStandards" class="tab-pane" id="{{standard?.standardID}}">
+                                        <h5 class="info-text">Aspectos de la norma {{standard?.standard?.name}}</h5>
+
+                                        <table class="table">
+                                            <tbody>
+                                                <tr *ngFor="let aspect of standard?.standard?.aspects">
+                                                    <td>
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                <input class="form-check-input aspectCheck"
+                                  (change)="checkboxClicked($event, aspect,standard )" type="checkbox"
+                                  [attr.id]="aspect.aspectID">
+                                <span class="form-check-sign">
+                                  <span class="check"></span>
+                                </span>
+                              </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {{aspect?.title}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="tab-pane" id="finish">
+                                        <h5 class="info-text"> Información Final</h5>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-6">
+                                                Fecha de creación: <label class=" col-form-label">{{audit?.creationDate | date: 'dd/MM/yyyy' }}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                Tipo de Auditoría: <label class=" col-form-label">{{audit?.auditType?.name}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-6">
+                                                Planta: <label class=" col-form-label">{{audit?.sectorPlant?.plant?.name}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                Sector: <label class=" col-form-label">{{audit?.sectorPlant?.sector?.name}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-6">
+                                                Estado: <label class=" col-form-label">{{audit?.auditState?.name}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                Responsable: <label class=" col-form-label">{{audit?.auditorID != null ?  audit?.auditor?.name + ' ' +  audit?.auditor?.surname  : audit?.externalAuditor}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <p>Grupo Auditor</p>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <label class=" col-form-label">{{auditGroup.value}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <p>Analisis de la Documentación</p>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-6">
+                                                <i class="material-icons ">date_range</i> <label class=" col-form-label centerLabel">{{documentsAnalysisDate.value | date: 'dd/MM/yyyy' }}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <i class="material-icons">timer</i> <label class=" col-form-label centerLabel">{{documentAnalysisDuration.value}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <p>Inicio de la Auditoría</p>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-6">
+                                                <i class="material-icons ">date_range</i> <label class=" col-form-label centerLabel">{{auditInitDate.value | date: 'dd/MM/yyyy' }}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <i class="material-icons">timer</i> <label class=" col-form-label centerLabel">{{auditInitTime.value}}</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <p>Reunión de Cierre</p>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-6">
+                                                <i class="material-icons ">date_range</i>
+                                                <label class=" col-form-label centerLabel">{{mettingCloseDate.value | date: 'dd/MM/yyyy' }}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <i class="material-icons">timer</i>
+                                                <label class=" col-form-label centerLabel">{{mettingCloseTime.value}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <p>Fin de la Auditoría</p>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-6">
+                                                <i class="material-icons ">date_range</i> <label class=" col-form-label centerLabel">{{auditFinishDate.value | date: 'dd/MM/yyyy' }}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <i class="material-icons">timer</i>
+                                                <label class=" col-form-label centerLabel">{{auditFinishTime.value}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <p>Cierre de Plan</p>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <i class="material-icons ">date_range</i>
+                                                <label class=" col-form-label centerLabel">{{planCloseDate.value | date: 'dd/MM/yyyy' }}</label>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="info-text marginAspects">Aspectos Seleccionados</h5>
+                                        <div *ngFor="let standard of audit?.auditStandards">
+                                            <h5>{{standard?.standard?.name}}</h5>
+                                            <div *ngIf="standard?.aspectSelected.length == 0" class="marginButtonWithOutAspect">
+                                                No hay hallazgos para esta norma
+                                            </div>
+                                            <ul *ngFor="let aspect of standard?.aspectSelected">
+                                                <li>
+                                                    {{aspect?.title}}
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="card-footer">
+                                <div class="mr-auto">
+                                    <button name="previous" mat-raised-button type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Anterior" (click)="scrollTopAndShowPanel('previous')" [matTooltipPosition]="'above'">
+                    <i class="material-icons">arrow_back</i>
+                  </button>
+                                </div>
+                                <div class="ml-auto">
+                                    <button name="next" id="next_button" mat-raised-button type="submit" class="btn btn-next btn-fill btn-info btn-wd disabled btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Siguiente" (click)="scrollTopAndShowPanel('next')" [matTooltipPosition]="'above'">
+                    <i class="material-icons">arrow_forward</i>
+                  </button>
+                                    <button name="finish" (click)="onSubmit()" style="display: none;" mat-raised-button type="button" class="btn btn-finish btn-fill btn-info btn-wd disabled btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Finalizar" [matTooltipPosition]="'above'">
+                    <i class="material-icons">done</i>
+                  </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- wizard container -->
+            </div>
+        </div>
+    </div>
+</div>

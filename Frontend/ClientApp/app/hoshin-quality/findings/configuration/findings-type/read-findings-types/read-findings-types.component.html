@@ -1,0 +1,71 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title ">Tipos de hallazgo</h4>
+                    </div>
+                    <div class="card-body">
+                        <button mat-raised-button type="submit" *ngIf="canAdd" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Nuevo tipo de hallazgo" [matTooltipPosition]="'above'" [routerLink]="['/quality/finding/config/types/new']">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Nombre
+                                    </th>
+                                    <th>
+                                        Código
+                                    </th>
+                                    <th>
+                                        Activo
+                                    </th>
+                                    <th>
+                                        Acciones
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let el of findingTypes; let i=index">
+                                        <td>
+                                            {{(el.id)}}
+                                        </td>
+                                        <td>
+                                            {{el.name}}
+                                        </td>
+                                        <td>
+                                            {{el.code}}
+                                        </td>
+                                        <td>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" [checked]='el.active' [disabled]="!canSwitch"
+                                                        [swal]="desactivateFindingType">
+                                                    <span class="toggle"></span>
+                                                </label>
+                                            </div>
+                                            <swal #desactivateFindingType title="¿Desea {{el.active === true ? 'desactivar' : 'activar'}} el tipo de hallazgo {{el.name}}?" type="question" [showCancelButton]="true" [focusCancel]="true" (confirm)="updateFindingTypeActive(el)" [buttonsStyling]="true" confirmButtonText="Confirmar" cancelButtonText="Cancelar">
+                                            </swal>
+                                        </td>
+                                        <td>
+                                            <button mat-raised-button type="button" *ngIf="canEdit" [routerLink]="['/quality/finding/config/types',el.id,'edit']" matTooltip="Editar" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

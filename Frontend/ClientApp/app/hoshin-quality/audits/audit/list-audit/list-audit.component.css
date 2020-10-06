@@ -1,0 +1,35 @@
+.centerFields{
+  text-align: center;
+}
+
+.inProcessFinding{
+background-color: #dadada !important;
+}
+
+#col-0 {
+width: 68px;
+}
+
+#col-1 {
+width: 155px;
+}
+
+#col-2 {
+width: 133px;
+}
+
+#col-3 {
+width: 98px;
+}
+
+#col-4 {
+width: 146px;
+}
+
+#col-5 {
+width: 115px;
+}
+
+#col-6 {
+  width: 135px;
+  }

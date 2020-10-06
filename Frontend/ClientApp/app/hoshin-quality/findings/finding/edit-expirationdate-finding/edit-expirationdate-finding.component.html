@@ -1,0 +1,42 @@
+<block-ui>
+  <div class="main-content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-6 offset-md-3">
+                  <div class="card">
+                      <div class="card-header card-header-info">
+                          <h4 class="card-title">Hallazgo</h4>
+                          <p class="card-category">Editar fecha de vencimiento</p>
+                      </div>
+                      <div class="card-body">
+                        <dl>
+                            <dt>Id</dt>
+                            <dd>{{idLabel}}</dd>
+                            <dt>Descripción</dt>
+                            <dd>{{descriptionLabel}}</dd>
+                        </dl>
+                        <form [formGroup]="editExpirationDateFindingForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field>
+                                        <input matInput [matDatepicker]="picker" formControlName="expirationDate" placeholder="Fecha de vencimiento" type="date">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <button mat-raised-button type="submit" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Aceptar" [matTooltipPosition]="'above'">
+                                <i class="material-icons">done</i>
+                            </button>
+                            <button mat-raised-button type="button" [routerLink]="['/quality/finding/list']" class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+                                <i class="material-icons">arrow_back</i>
+                            </button>
+                            <div class="clearfix"></div>
+                        </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</block-ui>

@@ -1,0 +1,61 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+        <div class="card">
+          <div class="card-header card-header-tabs card-header-info">
+            <div class="nav-tabs-navigation">
+              <div class="nav-tabs-wrapper">
+                <span class="nav-tabs-title">Alertas:</span>
+                <ul class="nav nav-tabs" data-tabs="tabs">
+                  <li *ngFor="let alert of alertsForType" class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active': alert.index == 0}" [attr.href]="'#' + alert.typeAlert" data-toggle="tab">
+                      <i *ngIf="alert.typeAlert == 'Hallazgo'" class="material-icons"></i>
+                      <i *ngIf="alert.typeAlert == 'Auditoría'" class="material-icons"></i>
+                      <i *ngIf="alert.typeAlert == 'Genérico'" class="material-icons"></i>
+                      <i *ngIf="alert.typeAlert == 'Tareas'" class="material-icons"></i>
+                      <i *ngIf="alert.typeAlert == 'Acción Correctiva'" class="material-icons"></i>
+                      {{alert.typeAlert}}
+                      <div class="ripple-container"></div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="tab-content">
+              <div *ngFor="let alert of alertsForType" class="tab-pane" [ngClass]="{'active': alert.index == 0}" [id]="alert.typeAlert">
+                <table class="table">
+                  <tbody>
+                    <tr *ngFor="let subalert of alert.alerts">
+                      <td>
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" (change)="changeAlert()" [disabled]="!subalert.canSee" [(ngModel)]="subalert.GenerateAlert">
+                            <span class="form-check-sign">
+                              <span class="check"></span>
+                            </span>
+                          </label>
+                        </div>
+                      </td>
+                      <td>{{subalert?.description}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button mat-raised-button type="button" (click)="saveAlerts()" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Aceptar" [matTooltipPosition]="'above'">
+                <i class="material-icons">done</i>
+              </button>
+              <button [routerLink]="['/home']" mat-raised-button type="button" class="btn btn-separator btn-round btn-full-round pull-left"
+                matTooltip="Volver" [matTooltipPosition]="'above'">
+                <i class="material-icons">arrow_back</i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

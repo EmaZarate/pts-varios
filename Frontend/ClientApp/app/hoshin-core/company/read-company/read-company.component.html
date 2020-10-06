@@ -1,0 +1,60 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 col-sm-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Empresa {{company?.businessName}}</h4>
+                        <p class="card-category">Detalles de la Empresa</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Razón Social</h6>
+                                <p>{{company?.businessName}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>CUIT</h6>
+                                <p>{{company?.cuit}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Dirección</h6>
+                                <p>{{company?.address}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Teléfono</h6>
+                                <p>{{company?.phoneNumber}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <h6>Logo</h6>
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="fileinput-new thumbnail">
+                                        <img [src]="[srcLogo]" alt="...">
+                                    </div>
+                                    <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button mat-raised-button type="button" [routerLink]="[editRoute]" class="btn btn-separator btn-round btn-info btn-full-round pull-right"
+                            matTooltip="Editar" [matTooltipPosition]="'above'">
+                            <i class="material-icons">edit</i>
+                        </button>
+                        <button mat-raised-button type="button" [routerLink]="['/home']" class="btn btn-separator btn-round btn-full-round pull-left"
+                            matTooltip="Volver" [matTooltipPosition]="'above'">
+                            <i class="material-icons">arrow_back</i>
+                        </button>
+                        <div class="clearFix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<p>Editando planta: {{plant?.name}}</p>
+<div class="row">
+  <div id="sectorsChecks" class ="col-md-3" *ngFor="let sector of allSectors">
+      <div class="form-check">
+      <label class="form-check-label">
+          <input class="form-check-input sectorCheck" (change)="checkboxClicked($event, sector)" type="checkbox" value="{{sector.sectorId}}">
+          <span class="form-check-sign">
+            <span class="check"></span>
+          </span>
+        </label>
+        <span>{{sector.name}}</span>
+      </div>
+  </div>
+</div>

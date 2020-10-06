@@ -1,0 +1,67 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title ">Plantas</h4>
+                    </div>
+                    <div class="card-body">
+                        <button mat-raised-button type="submit" *ngIf="canAdd"
+                            class="btn btn-separator btn-round btn-info btn-full-round pull-right"
+                            matTooltip="Nueva planta" [matTooltipPosition]="'above'"
+                            [routerLink]="['/core/plants/new']">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>País</th>
+                                    <th>Activo</th>
+                                    <th>Acciones</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor='let plant of plants' [ngClass]="{'disabledState':!plant.active}">
+                                        <td>
+                                            {{(plant.plantID)}}
+                                        </td>
+                                        <td>
+                                            {{plant.name}}
+                                        </td>
+                                        <td>
+                                            {{plant.country}}
+                                        </td>
+                                        <td>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" [checked]='plant.active'
+                                                        [disabled]="!canSwitch" [swal]="desactivatePlant">
+                                                    <span class="toggle"></span>
+                                                </label>
+                                            </div>
+                                            <swal #desactivatePlant
+                                                title="¿Desea {{plant.active === true ? 'desactivar' : 'activar'}} la planta {{plant.name}}?"
+                                                type="question" [showCancelButton]="true" [focusCancel]="true" confirmButtonText="Confirmar" cancelButtonText="Cancelar" buttonsStyling="true"
+                                                (confirm)="updatePlantState(plant)">
+                                            </swal>
+                                        </td>
+                                        <td>
+                                            <button mat-raised-button type="button" *ngIf="canEdit"
+                                                [routerLink]="['/core/plants/',plant.plantID,'edit']"
+                                                matTooltip="Editar" [matTooltipPosition]="'above'"
+                                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

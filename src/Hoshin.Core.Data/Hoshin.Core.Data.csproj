@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{34647afc-edb7-462d-8c81-d9bc5b84576c}</ProjectGuid>      
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\Context\**" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\Migrations\**" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\Repository\**" />
+    <EmbeddedResource Remove="SQL\EntityFrameworkCoreDataAccess\Context\**" />
+    <EmbeddedResource Remove="SQL\EntityFrameworkCoreDataAccess\Migrations\**" />
+    <EmbeddedResource Remove="SQL\EntityFrameworkCoreDataAccess\Repository\**" />
+    <None Remove="SQL\EntityFrameworkCoreDataAccess\Context\**" />
+    <None Remove="SQL\EntityFrameworkCoreDataAccess\Migrations\**" />
+    <None Remove="SQL\EntityFrameworkCoreDataAccess\Repository\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20181102175721_drop-comments-table.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20181102175759_drop-comments-table.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190325191611_AuditDataModel.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190325192304_AuditDataModel2.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190328123948_add field basic in Roles.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190411142155_AuditsReference.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190411142826_AuditsReference.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190502195337_finding_foreign_keys_nullables.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190711195047_fix-foreign-key.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190711200346_fix-foreign-key.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190711201705_fix-foreign-key.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190712124143_fix-foreign-key.cs" />
+    <Compile Remove="SQL\EntityFrameworkCoreDataAccess\SQLServer\Migrations\20190716185713_change-task-tables.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NoSQL\Entities\" />
+    <Folder Include="NoSQL\MongoDataAccess\" />
+    <Folder Include="SQL\Entities\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0-preview2-35157" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0-preview2-35157" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0-preview2-35157" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0-preview2-35157" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.0-preview2-35157" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0-preview2-35157" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hoshin.Core.Application\Hoshin.Core.Application.csproj" />
+    <ProjectReference Include="..\Hoshin.Core.Domain\Hoshin.Core.Domain.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.Authorization\Hoshin.CrossCutting.Authorization.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.WorkflowCore\Hoshin.CrossCutting.WorkflowCore.csproj" />
+    <ProjectReference Include="..\Hoshin.Quality.Application\Hoshin.Quality.Application.csproj" />
+    <ProjectReference Include="..\Hoshin.Quality.Domain\Hoshin.Quality.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.identity.entityframeworkcore\2.1.1\lib\netstandard2.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Identity.Stores">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.identity.stores\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Identity.Stores.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

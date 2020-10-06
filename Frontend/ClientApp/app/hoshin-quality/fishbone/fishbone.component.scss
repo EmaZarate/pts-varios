@@ -1,0 +1,42 @@
+  .modal-content {
+    border-radius: 0px;
+    z-index: 1049;
+  }
+
+  .modal-backdrop {
+    background-color: #777777;
+    opacity: 0.699999988079071 !important;
+    color: #404040;
+  }
+
+  .spineCircle.addSpineOk {
+    stroke: rgb(17, 126, 189);
+  }
+
+  .lineSpineAdd {
+    stroke: #000;
+    stroke-dasharray: 3, 3;
+  }
+
+  .spineCircle {
+    fill: none;
+    stroke: red;
+    stroke-width: 2px;
+  }
+
+  .removeUnderline a {
+    text-decoration: none;
+  }
+
+
+  .hideCustomButton {
+    display: none;
+  }
+
+  .showCustomButton {
+    display: block;
+  }
+
+  .centerDiagram{
+    text-align: "center";
+  }

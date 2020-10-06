@@ -1,0 +1,77 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Reasignar Hallazgo</h4>
+          </div>
+          <div class="card-body">
+            <dl>
+              <dt>ID</dt>
+              <dd>{{_finding?.id}}</dd>
+              <dt>Descripción</dt>
+              <dd>{{_finding?.description}}</dd>
+              <dt>Planta</dt> 
+              <dd>{{_finding?.sectorPlantTreatmentPlantName}}</dd>
+              <dt>Sector</dt> 
+              <dd>{{_finding?.sectorPlantTreatmentSectorName}}</dd>
+              <dt>Responsable Actual</dt>
+              <dd>{{_finding?.responsibleUserFullName}}</dd>
+            </dl>
+            <form [formGroup]="reassingFindingForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-md-12">
+                  <dt>Seleccione un nuevo responsable</dt>
+                    <mat-form-field class="example-full-width">
+                        <mat-select placeholder="Planta de tratamiento"
+                            (selectionChange)="changeSelectionTreatment($event.value)"
+                            formControlName="plantTreatment">
+                            <mat-option *ngFor="let plantTreatment of allPlants"
+                                [value]="plantTreatment.plantID">
+                                {{plantTreatment.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                        <mat-select placeholder="Sector de tratamiento"
+                            (selectionChange)="changeSelectionSectorTreatment($event.value)"
+                            formControlName="sectorTreatment">
+                            <mat-option *ngFor="let sectorTreatment of sectorTreatments"
+                                [value]="sectorTreatment.id">
+                                {{sectorTreatment.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                      <mat-select placeholder="Usuario responsable" formControlName="responsibleUser">
+                          <mat-option *ngFor="let responsibleUser of responsibleUsers"
+                              [value]="responsibleUser.id">
+                              {{responsibleUser.name}} {{responsibleUser.surname}}
+                          </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+          </div>
+              <button mat-raised-button type="submit" class="btn btn-separator btn-round btn-info btn-full-round pull-right" matTooltip="Reasignar" [matTooltipPosition]="'above'">
+                  <i class="material-icons">done</i>
+              </button>
+              <button mat-raised-button type="button" [routerLink]="['/quality/finding/list']" class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver" [matTooltipPosition]="'above'">
+                  <i class="material-icons">arrow_back</i>
+              </button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

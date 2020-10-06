@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{e1590b6c-721a-4d15-8658-258fd6f73106}</ProjectGuid>      
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0-preview2-35157" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <ProjectReference Include="..\Hoshin.CrossCutting.ErrorHandler\Hoshin.CrossCutting.ErrorHandler.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.JWT\Hoshin.CrossCutting.JWT.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.Storage\Hoshin.CrossCutting.Storage.csproj" />
+    <ProjectReference Include="..\Hoshin.Core.Application\Hoshin.Core.Application.csproj" />
+    <ProjectReference Include="..\Hoshin.Core.Data\Hoshin.Core.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hoshin.Core.Application\Hoshin.Core.Application.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.Message\Hoshin.CrossCutting.Message.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.WorkflowCore\Hoshin.CrossCutting.WorkflowCore.csproj" />
+    <ProjectReference Include="..\Hoshin.Infra.AzureStorage\Hoshin.Infra.AzureStorage.csproj" />
+    <ProjectReference Include="..\Hoshin.Quality.Application\Hoshin.Quality.Application.csproj" />
+  </ItemGroup>
+
+</Project>

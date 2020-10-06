@@ -1,0 +1,172 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Acción Correctiva</h4>
+            <p class="card-category">Registrar Acción Correctiva</p>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="correctiveActionForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                  <div class="col-md-12">
+                      <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Descripción" formControlName="description" type="text">
+                      </mat-form-field>
+                  </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Hallazgo relacionado"
+                      formControlName="relatedFinding">
+                      <mat-option *ngFor="let finding of allFindings"
+                        [value]="finding.id">
+                        {{finding.id}} - {{finding.description}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Tipo de Hallazgo relacionado" [formControl]="relatedFindingType" type="text" readonly>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Planta de Ubicación"
+                      (selectionChange)="changeSelectionLocationPlant($event.value)"
+                      formControlName="locationPlant">
+                      <mat-option *ngFor="let locationPlant of allPlants"
+                        [value]="locationPlant.plantID">
+                        {{locationPlant.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Sector de Ubicación"
+                      formControlName="locationSector">
+                      <mat-option *ngFor="let locationSector of locationSectors"
+                        [value]="locationSector.id">
+                        {{locationSector.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Planta de Tratamiento"
+                      (selectionChange)="changeSelectionTreatmentPlant($event.value)"
+                      formControlName="treatmentPlant">
+                      <mat-option *ngFor="let treatmentPlant of allPlants"
+                        [value]="treatmentPlant.plantID">
+                        {{treatmentPlant.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Sector de Tratamiento"
+                      (selectionChange)="changeSelectionTreatmentSector($event.value)"
+                      formControlName="treatmentSector">
+                      <mat-option *ngFor="let treatmentSector of treatmentSectors"
+                        [value]="treatmentSector.id">
+                        {{treatmentSector.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width" >
+                    <mat-select placeholder="Usuario Responsable"
+                    (selectionChange)="changeResponsibleUserOrReviewerUser($event.value, 'responsive')"
+                      formControlName="responsibleUser">
+                      <mat-option *ngFor="let resp of responsibleUsers"
+                        [value]="resp.id">
+                        {{resp.name}} {{resp.surname}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Planta de evaluador"
+                      (selectionChange)="changeSelectionEvaluatorPlant($event.value)"
+                      formControlName="evaluatorPlant">
+                      <mat-option *ngFor="let evaluatorPlant of allPlants"
+                        [value]="evaluatorPlant.plantID">
+                        {{evaluatorPlant.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Sector de evaluador"
+                      (selectionChange)="changeSelectionEvaluatorSector($event.value)"
+                      formControlName="evaluatorSector">
+                      <mat-option *ngFor="let evaluatorSector of evaluatorSectors"
+                        [value]="evaluatorSector.id">
+                        {{evaluatorSector.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Evaluador"
+                    (selectionChange)="changeResponsibleUserOrReviewerUser($event.value, 'reviewer')"
+                      formControlName="reviewer">
+                      <mat-option *ngFor="let rev of evaluatorUsers"
+                        [value]="rev.id">
+                        {{rev.name}} {{rev.surname}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              
+              <button mat-raised-button type="submit"
+                class="btn btn-separator btn-round btn-info btn-full-round pull-right"
+                matTooltip="Aceptar" [matTooltipPosition]="'above'">
+                <i class="material-icons">done</i>
+              </button>
+              <button mat-raised-button type="button" [routerLink]="['/quality/corrective-actions/list']"
+                class="btn btn-separator btn-round btn-full-round pull-left" matTooltip="Volver"
+                [matTooltipPosition]="'above'">
+                <i class="material-icons">arrow_back</i>
+              </button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

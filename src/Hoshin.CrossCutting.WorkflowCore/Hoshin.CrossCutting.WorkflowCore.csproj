@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{c0eb270b-1088-40b1-99a9-97773359b9b7}</ProjectGuid>      
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.0.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0-preview2-35157" />
+    <PackageReference Include="WorkflowCore" Version="1.6.7" />
+    <PackageReference Include="WorkflowCore.Persistence.SqlServer" Version="1.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hoshin.CrossCutting.Logger\Hoshin.CrossCutting.Logger.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.Message\Hoshin.CrossCutting.Message.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.SignalR\Hoshin.CrossCutting.SignalR.csproj" />
+  </ItemGroup>
+
+</Project>

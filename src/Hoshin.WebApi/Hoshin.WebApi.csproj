@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{8eaed4d0-65e3-43f2-9696-a1471b983c55}</ProjectGuid>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.1\Hoshin.WebApi.xml</DocumentationFile>
+    <noWarn>1591</noWarn>
+    <WarningLevel>2</WarningLevel>      
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netcoreapp2.1\Hoshin.WebApi.xml</DocumentationFile>
+    <noWarn>1591</noWarn>      
+  </PropertyGroup>    
+
+  <ItemGroup>
+    <Content Include="assets\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+    
+  <ItemGroup>
+    <Folder Include="assets\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0-preview2-35157" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hoshin.CrossCutting.ErrorHandler\Hoshin.CrossCutting.ErrorHandler.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.IoC\Hoshin.CrossCutting.IoC.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.JWT\Hoshin.CrossCutting.JWT.csproj" />
+    <ProjectReference Include="..\Hoshin.Core.Application\Hoshin.Core.Application.csproj" />
+    <ProjectReference Include="..\Hoshin.Core.Data\Hoshin.Core.Data.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.Logger\Hoshin.CrossCutting.Logger.csproj" />
+    <ProjectReference Include="..\Hoshin.CrossCutting.Message\Hoshin.CrossCutting.Message.csproj" />
+    <ProjectReference Include="..\Hoshin.Infra.AzureStorage\Hoshin.Infra.AzureStorage.csproj" />
+    <ProjectReference Include="..\Hoshin.Quality.Application\Hoshin.Quality.Application.csproj" />
+    <ProjectReference Include="..\Hoshin.Quality.Domain\Hoshin.Quality.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Workflows.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptModuleKind />
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

@@ -1,0 +1,90 @@
+<block-ui>
+    
+<div class="wrapper wrapper-full-page">
+        <div class="page-header login-page">
+          <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-4 col-md-6 col-sm-6 ml-auto mr-auto">
+                <form class="form" method="" action="">
+                  <div class="card card-login card-hidden">
+                    <div class="card-header card-header-rose text-center">
+                      <h4 class="card-title">Ingresar a Hoshin Cloud<i class="fa fa-mixcloud title-icon"></i></h4>
+                      <div class="social-line">
+                        <a (click)="onLogin(0)" class="btn btn-just-icon btn-link btn-white">
+                            <i class="fa fa-windows"></i>
+                        </a>
+                        <a (click)="onLogin(1)" class="btn btn-just-icon btn-link btn-white">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                        <a (click)="onLogin(2)" class="btn btn-just-icon btn-link btn-white">
+                            <i class="fa fa-facebook-square"></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="card-body ">
+                        <span class="bmd-form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="material-icons">email</i>
+                                    </span>
+                                </div>
+                                <input type="email" name="email" class="form-control" [(ngModel)]="creds.email" placeholder="E-mail *" required>
+                            </div>
+                        </span>
+                        <span class="bmd-form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="material-icons">lock_outline</i>
+                                    </span>
+                                </div>
+                                <input type="password" name="password" class="form-control" placeholder="Contraseña *" [(ngModel)]="creds.password" required>
+                            </div>
+                        </span>
+                    
+                        <div class="divError" *ngIf="errorLogin">
+                            <div class="labelError" *ngFor="let error of errorType" >
+                                    {{error}}
+                            </div>
+                        </div>
+                    
+                    </div>
+
+                    <div class="card-footer justify-content-center">
+                      <input type="submit" (click)="onLoginHoshin()" class="btn btn-rose btn-link btn-lg" value="Ingresar" />
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <footer class="footer">
+                <div class="container-fluid">
+                  <nav class="pull-left">
+                    <ul>
+                      <li>
+                        <a href="https://mstech720.sharepoint.com/">
+                          MS Technologies
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://mstech720.sharepoint.com/">
+                          About Us
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                  <div class="copyright pull-right">
+                      Copyright &copy; 2018 <a href="https://mstech720.sharepoint.com/" target="_blank">MS Technologies.</a> Todos los derechos reservados.
+                    </div>
+                </div>
+              </footer>
+              
+        </div>
+      </div>
+      
+    
+</block-ui>

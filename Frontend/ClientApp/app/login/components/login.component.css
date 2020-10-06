@@ -1,0 +1,102 @@
+.user-inputs {
+    width: 100%;
+}
+
+.login-card {
+    margin-top: 15vh;
+}
+
+.login-card mat-card-title {
+    font-size: 20px !important;    
+}
+
+.login-card mat-card {
+    padding: 35px;
+}
+.title-icon {
+    margin-left: 10px;
+    color: #0000ff94;
+}
+
+.login-buttons {
+    width: 100%;
+    margin-bottom: 20px !important;
+    margin-left: 0px !important;
+    color: white;
+    position: relative;
+}
+
+.card-center {
+    text-align: center;
+    display: unset;
+}
+
+.login-icon {
+    color:white;
+    font-size: 24px;
+}
+
+.own-button {
+    margin-bottom: 15px;
+    background-color: #2bb673;
+}
+
+.office-button {
+    background-color: #28b1e6;    
+}
+
+.login-buttons i {
+    position: absolute;
+    left: 15px;
+    top: 15%;
+}
+
+.google-button {
+    background-color: #db5033;
+}
+
+.facebook-button {
+    background-color: #425dae;
+}
+
+.or {
+    text-align: center;
+}
+
+.or button {
+    font-weight: 500;
+    margin-bottom: 15px;
+    background-color: white;
+    color: black;
+    box-shadow: inset 0px 0px 20px -7px rgba(0,0,0,0.68);
+    pointer-events: none;
+}
+
+.login-divider {
+    width: 40%;
+    border-top: 1px solid black;
+}
+
+.divider-line {
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+
+.login-card-actions {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    padding-top: 8px;
+}
+
+.divError{
+    margin-left: 55px;
+    margin-top: 5px;
+}
+.labelError{
+    font-size:12px;
+    color: red;
+}
+
+.login-page .footer .copyright, .login-page .footer a {    
+    color: #3c4858 !important;
+}
